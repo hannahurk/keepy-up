@@ -108,8 +108,9 @@ SOCCER_SPOT = 0.30   # side of each robot's soccer spot (matches the pink tape)
 
 
 def soccer_side(width, side):
-    """(x_low, x_high) of one team's half in floor soccer. Like air hockey, people
-    and robots never cross the centre line: only the balloon does."""
+    """(x_low, x_high) of one team's half in floor soccer (where each team serves from).
+    People stay behind their own goal line and reach in; robots stay on their side, up to
+    halfway into the people's half."""
     return (0.0, width / 2) if side == "left" else (width / 2, width)
 
 

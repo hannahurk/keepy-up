@@ -39,6 +39,7 @@ import time
 import robots as robotlib
 from guard import Guard
 from soccer import MOMENT_PORT
+import room as roomlib
 from room import play_on_mac, wrap_degrees
 
 LOST_AFTER = 0.5     # seconds
@@ -60,6 +61,7 @@ EDGE_SPEED = 0.30    # m/s: top speed near the border (less sliding past the tap
 MISS_MIN_PUSH = 1.0  # seconds
 MISS_MOVE = 0.05     # metres
 MISS_EVERY = 5.0     # seconds
+FACE_TOLERANCE = 15  # degrees: at its square, a guarding robot turns until it faces the people's goal this closely
 
 
 class Chaser:
@@ -194,6 +196,8 @@ class Chaser:
                 arrived = ARRIVED
                 job = "chase"
             forward, turn, dist = self.steer(robot, target, arrived)
+            if job == "guard" and forward == 0 and turn == 0:
+                turn = self.face_people_goal(robot, room["width"], room["depth"])   # 13 Nov
             if self.must_wait(name, robot, target, msg["robots"], soccer, balloon):
                 forward = 0.0          # keep apart: may turn on the spot, but not drive closer
                 self.log_status(name, f"{job}: waiting, too close to the other robot")
@@ -212,6 +216,16 @@ class Chaser:
                 await driver.stop()
             else:
                 await driver.drive(forward, turn)
+
+    def face_people_goal(self, robot, width, depth):
+        """Turn rate to face the middle of the people's goal (0 once facing it closely enough)."""
+        side = "left" if self.guard.robots_defend == "right" else "right"
+        gx, y0, y1 = roomlib.goals(width, depth)[side]
+        error = wrap_degrees(math.degrees(math.atan2((y0 + y1) / 2 - robot["y"], gx - robot["x"])) - robot["heading"])
+        if abs(error) <= FACE_TOLERANCE:
+            return 0.0
+        turn = max(-self.max_turn, min(self.max_turn, error * 2.0))
+        return -turn if self.clockwise else turn
 
     def check_miss(self, name, balloon):
         """A push just ended: if the balloon hardly moved, the robot missed it."""
@@ -260,7 +274,7 @@ class Chaser:
         The same moment again within 2 s is skipped ("Out!" can repeat quickly)."""
         if self.guard and moment == "play":
             self.guard.serving = False         # play on: a robot waits where it is
-        elif self.guard and (moment in ("out", "new_game") or moment.endswith(("_goal", "_win"))):
+        elif self.guard and (moment in ("out", "stuck", "new_game") or moment.endswith(("_goal", "_win"))):
             self.guard.serving = True          # a serve: robots go back to their squares
         if moment in ("pause", "resume"):      # from the launcher's p key
             self.paused = moment == "pause"

@@ -330,10 +330,10 @@ DOING = [  # (start of chase.py's status, words on screen, colour)
 ]
 JOBS = {"push": "pushing the balloon!", "get behind": "getting behind the balloon",
         "guard": "guarding the goal", "chase": "chasing the balloon",
-        "wait": "waiting: the balloon is on the other robot's side"}
+        "wait": "waiting where it is", "back over the line": "going back over the centre line"}
 MOMENTS = {"play": "Play!", "out": "Out!", "robots_goal": "The robots scored!",
            "people_goal": "You scored!", "robots_win": "The robots win!",
-           "people_win": "You win!", "new_game": "New game", "near_miss": "So close!"}
+           "people_win": "You win!", "new_game": "New game", "near_miss": "So close!", "stuck": "Stuck! Served again"}
 
 
 def robot_line(st, line):
@@ -448,11 +448,15 @@ class Launcher:
         for k in ("a", "c", "m"):
             mark = f"  {DIM}(last time){RESET}" if k == last else ""
             lines.append(f"     {B}{k}{RESET}   {names[k]}{mark}")
-        lines += ["", f"  Press a, c or m.  {DIM}Return = {names[last].lower()}.  q = close.{RESET}"]
+        lines += ["", f"  Press a, c or m.  {DIM}Return = {names[last].lower()}.  h = how to play.  q = close.{RESET}"]
         show = lambda: draw(lines + ["", "  " + self.voice_hint(f"Say \u201cstart\u201d for {names[last].lower()}")])
-        show()
-        k = wait_key(self.keys, set("acmq\n"), tick=show)
-        return last if k == "\n" else k
+        while True:
+            show()
+            k = wait_key(self.keys, set("acmqh\n"), tick=show)
+            if k != "h":
+                return last if k == "\n" else k
+            if self.how_to_play() == "q":
+                return "q"
 
     def checklist(self, choice):
         robots = CHOICES[choice][1]
@@ -469,10 +473,49 @@ class Launcher:
                   "A grown-up is watching"]
         lines = header(CHOICES[choice][0]) + ["", f"  {B}Before we start, check:{RESET}", ""]
         lines += [f"     \u25a1  {t}" for t in items]
-        lines += ["", f"  {GREEN}{B}Return{RESET} = all set, let's play    {DIM}b = back    q = close{RESET}"]
+        lines += ["", f"  {GREEN}{B}Return{RESET} = all set, let's play    {DIM}h = how to play    b = back    q = close{RESET}"]
         show = lambda: draw(lines + ["", "  " + self.voice_hint("Say \u201cstart\u201d to start the game")])
-        show()
-        return wait_key(self.keys, set("\nbq"), tick=show)
+        while True:
+            show()
+            k = wait_key(self.keys, set("\nbqh"), tick=show)
+            if k != "h":
+                return k
+            if self.how_to_play() == "q":
+                return "q"
+
+    def how_to_play(self):
+        """The floor soccer rules, in plain words (13 Nov). Returns "q" to close the game."""
+        rules = [
+            (f"{B}The game{RESET}", [
+                "Two people against Cozmo and MiP. People stay behind their own goal",
+                "line, outside the arena, and reach in to hit or tap the balloon with",
+                "their hands and arms: no kicking, no stepping in."]),
+            (f"{B}Starting{RESET}", [
+                "Get ready... 1, 2, 3, START! Then the scoreboard says whose balloon",
+                "it is: put it down on that side, and after a second it says Play!"]),
+            (f"{GREEN}{B}Goal{RESET}", [
+                "The balloon rolls from inside the arena and touches the pink goal",
+                "line between the two pink posts. The team that scored gets the balloon."]),
+            (f"{YELLOW}{B}Out!{RESET}", [
+                "The balloon goes over the tape (and stays out for a moment). The",
+                "team whose side it went out on gets the balloon."]),
+            (f"{B}Winning{RESET}", [
+                "The first goal wins the game. Press n for a new game. A balloon that sits still",
+                "for 10 seconds where nobody can reach it is served again (Stuck!)."]),
+            (f"{B}The robots{RESET}", [
+                "Cozmo looks after the back strip and MiP the front. Each goes for the",
+                "balloon in its own strip and waits while it's in the other's. After a",
+                "goal or Out!, they go back to their pink squares."]),
+            (f"{RED}{B}Stop or pause{RESET}", [
+                "A grown-up always watches. p pauses, q or saying \u201cstop\u201d stops."]),
+        ]
+        lines = header("how to play") + [""]
+        for title, text in rules:
+            lines += [f"  {title}"] + [f"    {t}" for t in text] + [""]
+        lines += [f"  {GREEN}{B}Return{RESET} or {B}b{RESET} = back    {DIM}q = close{RESET}"]
+        draw(lines)
+        k = wait_key(self.keys, set("\nbq"))
+        return "q" if k == "q" else None
 
     def wifi_check(self, choice):
         """Make sure Cozmo can be reached before starting. Returns the choice to

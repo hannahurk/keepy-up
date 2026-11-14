@@ -40,18 +40,77 @@ def nav(current: str) -> str:
             '<a class="brand" href="/">Keepy Up</a>'
             '<nav class="navbtns" aria-label="Site">'
             + btn("/", "Animations", "home") + btn("/guide/", "Build guide", "guide")
-            + btn("/run/", "Run it yourself", "run") + btn("/soccer/", "Floor soccer", "soccer") +
+            + btn("/run/", "Run it yourself", "run") + btn("/soccer/", "Floor soccer", "soccer")
+            + '<a class="navbtn" href="https://github.com/hannahurk/keepy-up">Code on GitHub <span aria-hidden="true">&#8599;</span></a>' +
             "</nav></div></header>\n")
+
+
+SAFETY_HTML = """<div class="safety">
+<p class="safety-lead"><strong>The robots don't see people.</strong> The ceiling camera tracks only the balloon and the two robots. It doesn't see people or children at all, so the robots won't slow down or stop for anyone. A grown-up watching is the safety system.</p>
+<h3>Rules for families</h3>
+<ul>
+<li><strong>A grown-up always watches,</strong> within reach of the laptop, and can stop the game at any moment.</li>
+<li><strong>Keep hands and feet clear.</strong> Keep small children's hands and feet out of the robots' way, and nobody sits or lies in the arena while the robots are moving.</li>
+<li><strong>Floor soccer: stay outside the arena.</strong> The people kneel behind their own goal line and only reach in with their hands and arms. Nobody steps into the arena.</li>
+<li><strong>Flat floor only, never a table.</strong> MiP can't sense edges, and Cozmo's own edge stop is switched off, because it stopped him wrongly on the arena floor.</li>
+<li><strong>Nothing else on the arena floor,</strong> such as toys or shoes. The camera can mistake green or pink things for a robot.</li>
+<li><strong>Look after MiP.</strong> MiP is a balancing robot and can tip over. Keep its battery charged (the game screen warns in red under 25%) and give it room.</li>
+<li><strong>Popped balloons</strong> are a choking risk for children under 8. Pick up the pieces straight away.</li>
+</ul>
+<h3>How to stop the robots</h3>
+<p>Each of these stops the robots' wheels at once:</p>
+<ul>
+<li>Press <kbd>Q</kbd>, or say "stop".</li>
+<li>Press <kbd>P</kbd> to pause both robots and the scoreboard. Press <kbd>P</kbd> again, or say "start", to carry on.</li>
+<li>Press <kbd>Ctrl</kbd>+<kbd>C</kbd>, or close the game window.</li>
+<li>If the game program itself closes unexpectedly, the robot program stops the robots on its own.</li>
+</ul>
+<p class="small">The keys and voice commands are on the floor soccer game screen. Keepy uppy runs from Terminal for now: press <kbd>Ctrl</kbd>+<kbd>C</kbd> there.</p>
+<h3>What the robots do by themselves</h3>
+<ul>
+<li><strong>Wait for the start.</strong> The robots don't move until the start sequence ends: "Get ready...", 1, 2, 3, START! With Cozmo playing, they also wait until he has been moved off his charger.</li>
+<li><strong>Go slowly.</strong> Both robots top out at 0.20 m/s, about 20 cm a second.</li>
+<li><strong>Stay inside the tape.</strong> They aim at least 20 cm inside the taped border, and drive straight back in if they ever end up outside it.</li>
+<li><strong>Keep apart.</strong> A robot won't drive toward the other one when they're close (within 35 cm), and neither does within 20 cm. In simulation they never got closer than 19 cm.</li>
+<li><strong>Stop when they can't see.</strong> A robot stops if the camera loses sight of it, or of the balloon, for half a second, or if the camera stops sending. When it's hidden under the balloon, it waits.</li>
+<li><strong>MiP's Bluetooth.</strong> If it drops, MiP stops where it is and reconnects by itself.</li>
+</ul>
+<p class="small">These describe floor soccer, the game played with the real robots so far. Keepy uppy uses the same stops when a robot or the balloon is out of sight and the same arena limits, with a lower top speed (0.10 m/s), and hasn't been played with the real robots yet.</p>
+<h3>Calm and sensory-friendly</h3>
+<ul>
+<li><strong>Quiet sounds.</strong> The robots' voices and the sound effects are short and kept low, with no sudden loud noises. The game sounds play through the laptop, so the grown-up controls the volume.</li>
+<li><strong>No flashing lights.</strong></li>
+</ul>
+<h3>Privacy</h3>
+<ul>
+<li>Everything runs offline on the laptop: no internet is needed once it's set up.</li>
+<li>Voice commands only listen for "start" and "stop", and nothing is recorded.</li>
+<li>The ceiling camera's pictures are never saved, and Cozmo's own camera is off.</li>
+<li>The game keeps short text logs on the laptop. They're never sent anywhere.</li>
+</ul>
+</div>
+"""
+
+SAFETY_CSS = """
+.safety { display:block; }
+.safety h3 { font-family:var(--display); font-size:20px; margin:22px 0 6px; }
+.safety ul { margin:6px 0; padding-left:22px; }
+.safety li { margin:6px 0; }
+.safety .small { font-size:15px; color:var(--muted); }
+.safety-lead { margin:6px 0 4px; padding:14px 18px; border-left:6px solid var(--accent); border-radius:10px; background:var(--card); border-top:1px solid var(--line); border-right:1px solid var(--line); border-bottom:1px solid var(--line); }
+.safety kbd { font-family:ui-monospace, Menlo, monospace; font-size:14px; padding:1px 7px; border:1px solid var(--muted); border-bottom-width:2px; border-radius:6px; background:var(--card); white-space:nowrap; }
+"""
 
 
 def build_home() -> None:
     src = (ROOT / "keepy-up-in-motion.html").read_text()
     i = src.index('<div class="wrap">')
     head, body = src[:i], src[i:]
+    body = body.replace("<!-- SAFETY -->", SAFETY_HTML)
     page = ("<!doctype html>\n<html lang=\"en\">\n<head>\n<meta charset=\"utf-8\">\n"
             "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1, viewport-fit=cover\">\n"
             "<meta name=\"description\" content=\"Animated preview of a sensory keepy up game where Cozmo and MiP follow the balloon and a projected line traces its path.\">\n"
-            "<style>body{margin:0}" + NAV_CSS + "</style>\n" + head +
+            "<style>body{margin:0}" + NAV_CSS + SAFETY_CSS + "</style>\n" + head +
             "</head>\n<body>\n" + nav("home") + body + "\n</body>\n</html>\n")
     (SITE / "index.html").write_text(page)
 
@@ -233,6 +292,38 @@ svg .person { fill:var(--muted); }
 svg .balloon { fill:#F5C518; stroke:#A07C00; stroke-width:2; }
 figure.svgfig figcaption { color:var(--muted); }
 .hscroll { overflow-x:auto; }
+.news { margin:8px 0 6px; }
+.getcode { margin:20px 0; padding:14px 18px; border:1px solid var(--line); border-radius:10px; background:var(--card); }
+.getcode h2.wip-title { border-top:0; padding-top:0; margin:0 0 4px; font-size:24px; }
+.getcode p, .getcode li { margin:6px 0; }
+.news-card { margin:20px 0; padding:16px 20px; border-radius:12px; background:var(--accent); color:var(--accent-ink); }
+.news-card p { margin:4px 0; max-width:none; }
+.news-card .news-title { font-family:var(--display); font-weight:700; font-size:24px; }
+ol.countdown { list-style:none; padding:0; display:flex; flex-wrap:wrap; gap:10px; }
+ol.countdown li { margin:0; padding:8px 16px; border:1px solid var(--line); border-radius:999px; background:var(--card); font-weight:700; }
+ol.countdown li:last-child { background:var(--accent); color:var(--accent-ink); border-color:var(--accent); }
+svg .reach { stroke:var(--accent); stroke-width:3; stroke-dasharray:3 6; stroke-linecap:round; }
+.anim { margin:24px 0; }
+.anim h2 { margin-top:24px; }
+.sb { display:flex; align-items:baseline; justify-content:center; gap:14px; margin:14px 0 2px; font-family:var(--display); }
+.sb b { font-size:56px; line-height:1; min-width:1.2em; text-align:center; color:var(--accent); }
+.sb-team { font-size:20px; font-weight:700; } .sb-dash { font-size:36px; color:var(--muted); }
+.sb-msg { text-align:center; font-weight:700; font-size:20px; min-height:1.6em; margin:0 auto 4px; }
+.anim-fig { margin-top:6px; }
+.anim-fig .hscroll svg { min-width:0; }
+svg .bigmsg { font-family:var(--display); font-weight:700; font-size:54px; fill:var(--accent); stroke:var(--card); stroke-width:6; paint-order:stroke; }
+svg .p-body { fill:var(--muted); } svg .p-head { fill:var(--ink); }
+svg .lift-s { fill:none; stroke:#8C8C8C; stroke-width:3; stroke-linecap:round; }
+.ctl { display:flex; gap:10px; flex-wrap:wrap; margin:10px 0 4px; }
+.ctlbtn { min-height:44px; padding:8px 20px; border-radius:999px; border:1px solid var(--muted); background:var(--card); color:var(--ink); font:inherit; font-weight:700; cursor:pointer; }
+.ctlbtn:hover { border-color:var(--accent); box-shadow:inset 0 0 0 1px var(--accent); text-decoration:underline; text-underline-offset:3px; }
+.ctl-primary { background:var(--accent); color:var(--accent-ink); border-color:var(--accent); }
+.ctl-primary:hover { box-shadow:0 0 0 2px var(--bg), 0 0 0 4px var(--accent); }
+.ctlbtn:active { transform:translateY(1px); }
+.ctlbtn:focus-visible { outline:3px solid var(--accent); outline-offset:2px; }
+.anim-cap { min-height:3.2em; color:var(--ink); }
+svg .kneel ellipse { fill:var(--muted); } svg .khead { fill:var(--ink); } svg .karm { stroke:var(--muted); stroke-width:7; stroke-linecap:round; }
+svg .k-arm { stroke:var(--muted); stroke-width:7; stroke-linecap:round; } svg .k-hand { fill:var(--ink); }
 .hscroll svg { min-width:560px; }
 """
 
@@ -246,12 +337,12 @@ PAGES = {
 
 def build_page(key: str) -> None:
     src, folder, title, desc = PAGES[key]
-    body = (ROOT / src).read_text()
+    body = (ROOT / src).read_text().replace("<!-- SAFETY -->", SAFETY_HTML)
     head = (GUIDE_HEAD
             .replace("<title>Keepy Up Balloon Build Guide</title>", f"<title>{title}</title>")
             .replace('content="Step-by-step guide to building a sensory-friendly keepy up game where Cozmo and MiP follow the balloon, with a webcam and a projected wall drawing."',
                      f'content="{desc}"')
-            .replace("</style>", RUN_CSS + "</style>"))
+            .replace("</style>", RUN_CSS + SAFETY_CSS + "</style>"))
     page = (head + nav(key) + '<div class="wrap"><main id="top">\n' + body +
             "\n</main>\n</div>" + GUIDE_FOOT.replace("\n</main>", "", 1))
     out = SITE / folder

@@ -110,8 +110,10 @@ Ctrl+C in terminal 2 stops the robots.
 ## Playing floor soccer
 
 It plays like air hockey: 2 people against Cozmo and MiP, each team defending its own
-goal. People stay on their own side of the centre line. The robots may cross it and
-go up to halfway into the people's half, but never into the half by the people's goal.
+goal. People stay behind their own goal line, outside the arena, and reach in to push the
+balloon with their hands and arms: they hit or tap it (harder than the robots push). The robots may cross the
+centre line and go up to halfway into the people's half, but never into the half by the
+people's goal.
 
 **The easy way:** double-click **Keepy Up Soccer** on the Desktop. It runs
 `play_soccer.py`, which asks which robots (a = both, c = Cozmo, m = MiP), shows a
@@ -152,7 +154,9 @@ python soccer.py --robots-defend left
    the two pink posts (or when it rolls out of view through the goal mouth). A balloon in the air doesn't count.
 3. After a goal, or if the balloon leaves the play area elsewhere, the next serve
    restarts play. After the balloon goes out, the team whose side it went out on
-   serves. The first team to 5 goals wins; press n in the game window for a new game.
+   serves. If the balloon doesn't move for 10 seconds (somewhere nobody can reach), the
+   scoreboard says "Stuck!" and the team whose side it's on serves again. The first goal
+   wins the game; press n in the game window for a new game.
 
 Scoreboard keys (only when you run `soccer.py` by hand): SPACE pause, R new game,
 K serve again, Q quit. Started from the game window (`--no-keys`), the scoreboard ignores

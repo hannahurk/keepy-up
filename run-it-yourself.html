@@ -1,5 +1,6 @@
 <h1>Run it yourself</h1>
 <p class="lead">How to set up the Keepy Up software on your own laptop: the ceiling camera, the taped arena, the robot markers, the balloon and the robots. One arena and one tracker run both games: keepy uppy and <a href="/soccer/">floor soccer</a>. The <a href="/guide/">build guide</a> covers what to buy.</p>
+<p class="lead"><strong>Before playing, read the <a href="#safety">safety rules</a>.</strong> The robots don't see people, so a grown-up always watches.</p>
 
 <section class="wip" aria-labelledby="progress">
 <h2 id="progress" class="wip-title">Progress</h2>
@@ -27,8 +28,19 @@
 <p>People and children aren't tracked, so the robots don't slow down near them. A grown-up always watches, and speeds stay low.</p>
 </section>
 
-<p class="download"><a class="dlbtn" href="/keepy-up-code.zip" download>&darr; Download the code (zip)</a></p>
-<p class="small">The zip contains the tracker, both games, the soccer game screen, the tape guide, the robot tests and the voice demo. No sound files are included: the games run silently without them, and step 9 explains how to add your own.</p>
+<section class="getcode" aria-labelledby="code">
+<h2 id="code" class="wip-title">Get the code</h2>
+<p>The code is on GitHub, which always has the newest version: the tracker, both games, the soccer game screen, the tape guide, the robot tests and the voice demo.</p>
+<p class="download"><a class="dlbtn" href="https://github.com/hannahurk/keepy-up">Code on GitHub &#8599;</a></p>
+<p>There are two ways to get it:</p>
+<ul>
+<li><strong>Download it:</strong> on the GitHub page, click the green <strong>Code</strong> button, then <strong>Download ZIP</strong>, and unzip it. The folder is called <code>keepy-up-main</code>.</li>
+<li><strong>Copy it with git:</strong> in Terminal, run the line below. The folder is called <code>keepy-up</code>.</li>
+</ul>
+<pre><code>git clone https://github.com/hannahurk/keepy-up.git</code></pre>
+<p>Then set it up as in step 2, which follows <code>tracker/README.md</code>.</p>
+<p class="small"><strong>Not included:</strong> the sound files (they come from the Angry Birds and Cozmo apps, so they aren't ours to share), the game logs, and any camera pictures or recordings. The games run silently without sounds; step 9 explains how to add your own.</p>
+</section>
 
 <nav class="toc" aria-label="Steps on this page">
 <p class="toc-title">Steps</p>
@@ -44,7 +56,7 @@
 <li><a href="#robots">Test the robots on their own</a></li>
 <li><a href="#keepy">Play keepy uppy</a></li>
 <li><a href="#soccer">Play floor soccer</a></li>
-<li><a href="#safety">Safety and known limits</a></li>
+<li><a href="#safety">Safety</a></li>
 <li><a href="#message">For programmers: the position stream</a></li>
 </ol>
 </nav>
@@ -62,16 +74,17 @@
 <p>The <a href="/guide/">build guide</a> has the full shopping list, with why each item is needed.</p>
 
 <h2 id="install">2. Install the software</h2>
-<p>Unzip the download, open <strong>Terminal</strong>, and run these one at a time. They assume the folder is in Downloads.</p>
-<pre><code>cd ~/Downloads/keepy-up-code
-python3 -m venv .venv
+<p>Open <strong>Terminal</strong> and go into the code's <code>tracker</code> folder. If you copied it with git into your home folder, that's:</p>
+<pre><code>cd ~/keepy-up/tracker</code></pre>
+<p>If you downloaded the ZIP into Downloads, it's <code>cd ~/Downloads/keepy-up-main/tracker</code> instead. Then run these one at a time, as in <code>tracker/README.md</code>:</p>
+<pre><code>python3 -m venv .venv
 source .venv/bin/activate
-pip install -r tracker/requirements.txt
-pip install vosk sounddevice pillow certifi
+pip install -r requirements.txt
+pip install pillow certifi
 python3 -m pycozmo.resources download</code></pre>
-<p>The last line downloads Cozmo's animation files, once. The voice demo downloads a small English voice model (about 40 MB) the first time it runs, and after that works offline.</p>
+<p>The first three lines make a Python setup just for this project and install what it needs from <code>requirements.txt</code>. The fourth adds two extras for the voice demo, and the last downloads Cozmo's animation files, once. The voice commands download a small English voice model (about 40 MB) the first time they run, and after that work offline.</p>
 <p><strong>Every time you open a new Terminal window</strong>, start with:</p>
-<pre><code>cd ~/Downloads/keepy-up-code
+<pre><code>cd ~/keepy-up/tracker
 source .venv/bin/activate</code></pre>
 <p>When macOS asks to let Terminal use the camera, microphone or Bluetooth, choose Allow.</p>
 
@@ -130,7 +143,7 @@ source .venv/bin/activate</code></pre>
 <thead><tr><th>Tape</th><th>What it marks</th><th>Game</th></tr></thead>
 <tbody>
 <tr><td><span class="sw sw-purple"></span>Purple</td><td>The border, and a cross at each corner. Cross 1 is back-left, 2 back-right, 3 front-right and 4 front-left.</td><td>Both</td></tr>
-<tr><td><span class="sw sw-pink"></span>Pink</td><td>The centre line. In keepy uppy it splits Cozmo's half (left) from MiP's (right); in soccer it's the line nobody crosses.</td><td>Both</td></tr>
+<tr><td><span class="sw sw-pink"></span>Pink</td><td>The centre line. In keepy uppy it splits Cozmo's half (left) from MiP's (right); in soccer, the robots may cross it up to their reach line, halfway into the people's half.</td><td>Both</td></tr>
 <tr><td><span class="sw sw-pink"></span>Pink</td><td>A goal 72 cm wide in the middle of each short end: a post at each side and the goal line between them.</td><td>Floor soccer</td></tr>
 <tr><td><span class="sw sw-pink"></span>Pink</td><td>Two 30 cm squares just inside the robots' goal, where the robots wait: Cozmo by the top (back) post, MiP by the bottom (front) post.</td><td>Floor soccer</td></tr>
 <tr><td><span class="sw sw-blue"></span>Blue</td><td>A 42 cm rest square in each back corner, 6 cm in from the border: Cozmo's on the left, MiP's on the right.</td><td>Keepy uppy</td></tr>
@@ -246,7 +259,7 @@ python tape_guide.py --source 0 --camera-height 1.98 --game soccer   # floor soc
 <p>Other keys: <kbd>T</kbd> shows or hides the sliders, and <kbd>Q</kbd> quits. Pictures are processed in memory and never saved.</p>
 
 <h2 id="robots">9. Test the robots on their own</h2>
-<p>Do these before the games, from the main <code>keepy-up-code</code> folder (<code>cd ..</code> if you're in <code>tracker</code>). None of these use the camera, so the robots can't see: give each robot about 2 × 2 m of clear floor and keep children out of the way.</p>
+<p>Do these before the games, from the main <code>keepy-up</code> folder (<code>cd ..</code> if you're in <code>tracker</code>). None of these use the camera, so the robots can't see: give each robot about 2 × 2 m of clear floor and keep children out of the way.</p>
 <h3>Connect the robots</h3>
 <ul>
 <li><strong>MiP</strong> uses Bluetooth. Stand it up and let it balance first. MiP has no edge sensor, so only ever run it on the floor.</li>
@@ -254,10 +267,10 @@ python tape_guide.py --source 0 --camera-height 1.98 --game soccer   # floor soc
 </ul>
 <p><strong>If Cozmo connects but won't move</strong> (no face, no wheels), his software may have fallen back to a recovery mode. Connect him once with the official Cozmo app on a phone or tablet, which updates his software, then try again. That fixed ours.</p>
 <h3>Sounds</h3>
-<p>The download has no sound files, because they come from other companies' apps. Everything still works without them, just silently.</p>
+<p>The code on GitHub has no sound files, because they come from the Angry Birds and Cozmo apps. Everything still works without them, just silently. To add your own, make a folder called <code>sounds</code> in the main <code>keepy-up</code> folder, next to <code>tracker</code>:</p>
 <ul>
-<li><strong>Cozmo's voice:</strong> PyCozmo plays Cozmo's animations without sound, so the games play Cozmo's own voice clips alongside. If you have the Cozmo app on a Mac, <code>sounds/cozmo/README.txt</code> explains where they are and how to convert them.</li>
-<li><strong>Game sound effects</strong> (soccer): add your own short, quiet <code>.wav</code> files to the <code>sounds</code> folder. <code>sounds/README.txt</code> lists the names the game looks for.</li>
+<li><strong>Game sound effects</strong> (soccer, on the Mac's speakers): short, quiet <code>.wav</code> files in <code>sounds</code>, with these names: <code>count.wav</code> (a beep for each of 1, 2, 3), <code>start.wav</code>, <code>goal.wav</code>, <code>win.wav</code>, <code>near_miss.wav</code>, <code>out.wav</code>, <code>miss.wav</code> (a robot's missed push) and <code>stop.wav</code>. Any you leave out are skipped.</li>
+<li><strong>Cozmo's voice:</strong> PyCozmo plays Cozmo's animations without sound, so the games can play voice clips alongside. Put them in <code>sounds/cozmo</code>, named by kind, like <code>giggle_01.wav</code> or <code>vroom_01.wav</code>; the kinds are listed in <code>tracker/robots.py</code>. Use 22 kHz mono <code>.wav</code> files, which Cozmo's speaker plays.</li>
 <li><strong>MiP's sounds</strong> are built into MiP, so nothing to add.</li>
 </ul>
 <h3>The tests, in order</h3>
@@ -291,23 +304,14 @@ python chase.py</code></pre>
 <p>The top speed is 0.10 m/s; change it with <code>--max-speed</code>. <strong>Press <kbd>Ctrl</kbd>+<kbd>C</kbd> in Terminal 2 to stop the robots.</strong></p>
 
 <h2 id="soccer">11. Play floor soccer</h2>
-<p>Two people play Cozmo and MiP, air-hockey style, on the same arena. A friendly game screen starts everything: the camera, the scoreboard and the robots. The rules, how the robots play and how to start it are on the <a href="/soccer/">Floor soccer</a> page.</p>
+<p>Two people play Cozmo and MiP, air-hockey style, on the same arena. The people kneel behind their own goal line and tap the balloon with their hands. A friendly game screen starts everything: the camera, the scoreboard and the robots. The rules, how the robots play and how to start it are on the <a href="/soccer/">Floor soccer</a> page.</p>
 
-<h2 id="safety">12. Safety and known limits</h2>
-<p>Every robot stops at once if:</p>
+<h2 id="safety">12. Safety</h2>
+<!-- SAFETY -->
+<h3>Known limits right now</h3>
 <ul>
-<li>the camera hasn't seen it, or the balloon, for half a second</li>
-<li>it's hidden from the camera under the balloon (it waits there)</li>
-<li>no message has come from the tracker for half a second</li>
-<li>you press <kbd>Ctrl</kbd>+<kbd>C</kbd></li>
-</ul>
-<p>The robots always stay inside the arena: a robot found outside it drives straight back in before doing anything else.</p>
-<p>Known limits right now:</p>
-<ul>
-<li><strong>People and children aren't tracked</strong>, so the robots don't slow down or stop near them. A grown-up always watches, and speeds stay low.</li>
 <li>Keepy uppy hasn't been played with the real robots yet, and it doesn't have the game screen, voice commands or sounds that floor soccer has.</li>
 <li>In keepy uppy, the robots don't drive to their blue rest squares by themselves yet.</li>
-<li>In soccer, MiP gets weak when its battery is low: the game screen warns below 25%, so charge it before playing.</li>
 </ul>
 
 <h2 id="message">13. For programmers: the position stream</h2>

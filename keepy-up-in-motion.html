@@ -69,6 +69,7 @@ label.check { font-size: 14px; color: var(--muted); display: flex; align-items: 
     <h1>Keepy Up in Motion</h1>
     <p class="lead">Two short animations of the finished game: one webcam on a stand, Cozmo and MiP roaming the room, and a projected line on the wall that follows the balloon. Sound plays only for a tap and for a landing.</p>
     <p class="lead"><b>The robots follow the balloon.</b> Cozmo follows it in the left half of the room and MiP in the right, and when it lands the nearer robot nudges it back toward a child. The robots don't hit the balloon: the children keep it in the air.</p>
+    <p class="lead"><b>Before playing, read the <a href="#safety">safety rules</a>.</b> The robots don't see people, so a grown-up always watches.</p>
   </header>
 
   <section aria-labelledby="s1">
@@ -108,7 +109,7 @@ label.check { font-size: 14px; color: var(--muted); display: flex; align-items: 
         <div><b>MiP:</b> <span id="stMip">–</span></div>
       </div>
     </div>
-    <p class="note">Robots are drawn about twice their real size so you can see them. Cozmo looks after the left half and MiP the right. Both slow down within 1 m of a child and stop within 40 cm.</p>
+    <p class="note">Robots are drawn about twice their real size so you can see them. Cozmo looks after the left half and MiP the right. The robots don't see people, so a grown-up always watches and can stop them at any moment.</p>
   </section>
 
   <section aria-labelledby="s2">
@@ -124,6 +125,11 @@ label.check { font-size: 14px; color: var(--muted); display: flex; align-items: 
       </div>
       <p class="note">The line copies where the balloon goes, like a pen tied to it, and older parts fade after a few seconds. Taps don't mark the line: you hear them instead.</p>
     </div>
+  </section>
+
+  <section aria-labelledby="safety">
+    <h2 id="safety">Safety</h2>
+<!-- SAFETY -->
   </section>
 </div>
 
@@ -181,11 +187,10 @@ function stepBots(dt){
   else if(down){tx=b.hx;tz=b.hz;role='Watching from its calm spot';}
   else{tx=i===0?1.0:3.0;tz=clamp(B.z-1.0,0.5,1.8);role='Keeping level with the balloon';}
   tx=clamp(tx,b.lo,b.hi);
-  let dx=tx-b.x,dz=tz-b.z,dd=Math.hypot(dx,dz);let vx=dd>0.04?dx/dd:0,vz=dd>0.04?dz/dd:0;let slow=1,stop=false;
-  kids.forEach(k=>{const d=dist(b.x,b.z,k.x,k.z);if(d<0.4)stop=true;else if(d<1){const w=(1-d)*1.6;vx+=(b.x-k.x)/d*w;vz+=(b.z-k.z)/d*w;slow=Math.min(slow,clamp((d-0.4)/0.6,0.25,1));}});
+  let dx=tx-b.x,dz=tz-b.z,dd=Math.hypot(dx,dz);let vx=dd>0.04?dx/dd:0,vz=dd>0.04?dz/dd:0;let slow=1;  /* the real robots don't see people, so these don't react to the children either */
   const o=bots[1-i],od=dist(b.x,b.z,o.x,o.z);if(od<0.6&&od>0){vx+=(b.x-o.x)/od*(0.6-od)*3;vz+=(b.z-o.z)/od*(0.6-od)*3;}
   const vl=Math.hypot(vx,vz);let sp=0;const top=mine?0.34:0.2;if(vl>0.01&&dd>0.04){sp=top*slow*Math.min(1,dd/0.3);vx/=vl;vz/=vl;}
-  if(stop){sp=0;b.st='Stopped: a child is within 40 cm';}else if(slow<0.99&&sp>0)b.st=role+', slowly near a child';else b.st=role;
+  b.st=role;
   b.x=clamp(b.x+vx*sp*dt,Math.max(0.15,b.lo-0.1),Math.min(3.85,b.hi+0.1));b.z=clamp(b.z+vz*sp*dt,0.15,3.85);if(sp>0.02)b.hd=Math.atan2(vz,vx);b.moving=sp;b.bounce=Math.max(0,b.bounce-dt);});}
 function draw(now){
  const items=[];

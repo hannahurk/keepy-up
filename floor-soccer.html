@@ -1,71 +1,301 @@
 <h1>Floor soccer</h1>
-<p class="lead">The second game on the Keepy Up arena: <strong>two people against Cozmo and MiP</strong>, played like air hockey. Each team defends its own goal, nobody crosses the centre line, and only the balloon goes from side to side. The camera spots goals and keeps the score.</p>
+<p class="lead">The second game on the Keepy Up arena: <strong>two people against Cozmo and MiP</strong>, played like air hockey. The two people kneel behind their own goal line and tap the balloon with their hands, while the robots push it with their bodies. Each team defends its own goal, and the ceiling camera spots goals and keeps the score.</p>
+<p class="lead"><strong>Before playing, read the <a href="#safety">safety rules</a>.</strong> The robots don't see people, so a grown-up always watches.</p>
 
-<section class="wip" aria-labelledby="sstatus">
-<h2 id="sstatus" class="wip-title">Progress</h2>
-<p class="small">Last updated 8 November 2026</p>
-<ul>
-<li><strong>Done:</strong> the rules, the arena tape, the automatic scorekeeper (all 7 checks pass), and the robots' goal guarding, worked out in simulation.</li>
-<li><strong>Next:</strong> a dry run where the robots don't move, then the real robots with the scoreboard, then full games with people.</li>
-<li><strong>Not yet:</strong> sounds, and the robots' reactions to goals. People aren't tracked yet, so keep a grown-up watching and speeds low.</li>
-</ul>
-</section>
+<div class="news-card" role="note">
+<p class="news-title">First full game with both robots</p>
+<p>On 13 November, Cozmo and MiP played a whole game of floor soccer together for the first time: about five and a half minutes, with goals both ways and the game sounds playing. Each robot also plays on its own.</p>
+</div>
 
-<figure class="svgfig wide">
-<div class="hscroll"><svg viewBox="0 0 720 420" role="img" aria-labelledby="pitchT pitchD">
-<title id="pitchT">The floor soccer pitch, seen from above</title>
-<desc id="pitchD">The arena seen from above. The people's side is the left half, with the people's goal on the left end. The robots' side is the right half, split into two lanes: Cozmo's lane at the back (top) and MiP's lane at the front (bottom). The robots' goal is on the right end. Cozmo guards the back half of the goal and MiP the front half. Nobody crosses the pink centre line; only the balloon does.</desc>
-<text x="360" y="28" class="lbl muted" text-anchor="middle">Back (top of the camera picture)</text>
-<rect x="360" y="50" width="300" height="160" class="lane-c"/>
-<rect x="360" y="210" width="300" height="160" class="lane-m"/>
+<section class="anim" aria-labelledby="watch">
+<h2 id="watch">Watch a game</h2>
+<p>A made-up game, seen from the ceiling camera, that follows the real rules. Press Play to watch the start countdown, serves, goals, "Out!" and "Stuck!", up to 5 goals.</p>
+<div class="sb" aria-hidden="true"><span class="sb-team">People</span><b id="sbP">0</b><span class="sb-dash">–</span><b id="sbR">0</b><span class="sb-team">Robots</span></div>
+<p id="sbMsg" class="sb-msg" aria-hidden="true">Press Play</p>
+<figure class="svgfig wide anim-fig">
+<div class="hscroll"><svg id="pitch" viewBox="0 0 720 420" role="img" aria-label="Animated floor soccer game seen from above: two people kneel behind the left goal line and lean in to tap a yellow balloon toward the robots' goal on the right, while Cozmo guards the back strip and MiP the front strip.">
+<rect x="210" y="50" width="450" height="160" class="lane-c"/>
+<rect x="210" y="210" width="450" height="160" class="lane-m"/>
 <rect x="60" y="50" width="600" height="320" class="t-purple"/>
 <line x1="360" y1="50" x2="360" y2="370" class="t-pink"/>
-<line x1="360" y1="210" x2="660" y2="210" class="lane-split"/>
+<line x1="210" y1="210" x2="660" y2="210" class="lane-split"/>
+<line x1="210" y1="56" x2="210" y2="364" class="reach"/>
 <line x1="60" y1="139" x2="60" y2="281" class="t-goal"/>
 <line x1="660" y1="139" x2="660" y2="281" class="t-goal"/>
 <path d="M48 139 h24 M48 281 h24 M648 139 h24 M648 281 h24" class="t-post"/>
-<text x="210" y="190" class="lbl" text-anchor="middle">People's side</text>
-<text x="210" y="212" class="sm muted" text-anchor="middle">2 players</text>
-<circle cx="170" cy="250" r="12" class="person"/><circle cx="250" cy="250" r="12" class="person"/>
-<text x="500" y="110" class="lbl" text-anchor="middle">Cozmo's lane</text>
-<text x="500" y="130" class="sm muted" text-anchor="middle">guards the back half of the goal</text>
-<text x="500" y="290" class="lbl" text-anchor="middle">MiP's lane</text>
-<text x="500" y="310" class="sm muted" text-anchor="middle">guards the front half of the goal</text>
+<rect x="589" y="139" width="59" height="59" class="sq-pink"/>
+<rect x="589" y="222" width="59" height="59" class="sq-pink"/>
+<text x="135" y="30" class="sm muted" text-anchor="middle">people's side</text>
+<text x="510" y="30" class="sm muted" text-anchor="middle">robots' side</text>
+<text x="30" y="396" class="sm muted" text-anchor="middle">kneeling</text>
+<line id="arm1" class="k-arm"/><line id="arm2" class="k-arm"/>
+<g id="kid1"><ellipse rx="13" ry="21" class="p-body"/><circle cx="4" r="9" class="p-head"/></g>
+<g id="kid2"><ellipse rx="13" ry="21" class="p-body"/><circle cx="4" r="9" class="p-head"/></g>
+<circle id="hand1" r="5" class="k-hand"/><circle id="hand2" r="5" class="k-hand"/>
+<g id="rC"><rect x="-20" y="-12" width="40" height="24" rx="5" class="robot"/><path d="M12 -12 H28 M12 12 H28 M28 -14 V14" class="lift-s"/><rect x="-12" y="-7" width="14" height="14" rx="2" class="mk-green"/><rect x="5" y="-6" width="11" height="12" rx="2" class="mk-pink"/></g>
+<g id="rM"><rect x="-8" y="-24" width="16" height="7" rx="3" class="wheel"/><rect x="-8" y="17" width="16" height="7" rx="3" class="wheel"/><circle r="18" class="robot"/><rect x="-12" y="-7" width="14" height="14" rx="2" class="mk-green"/><rect x="5" y="-6" width="11" height="12" rx="2" class="mk-blue"/></g>
+<circle id="ball" r="32" class="balloon"/>
+<text id="big" x="360" y="225" class="bigmsg" text-anchor="middle"></text>
+</svg></div>
+<figcaption>Drawn from above. The two people kneel just outside the arena, behind their goal line, and lean in to tap the balloon. The robots are drawn about twice their real size, and the game runs at double speed. The moves are made up, but the rules are the real ones.</figcaption>
+</figure>
+<div class="ctl">
+<button type="button" id="aPlay" class="ctlbtn ctl-primary">Play</button>
+<button type="button" id="aRestart" class="ctlbtn">Restart</button>
+</div>
+<p id="aCap" class="anim-cap" aria-live="polite">Press Play to watch a game.</p>
+</section>
+<script>
+(function(){
+const W=3.048,D=1.626,S=600/W,OX=60,OY=50,REACH=W/4,RB=0.1635,MOUTH=[D/2-0.36,D/2+0.36],SPEED=2;
+const KX=-0.15,ARM=0.6,EDGE=0.2;
+const $=id=>document.getElementById(id);
+const X=x=>OX+x*S,Y=y=>OY+y*S;
+const rnd=(a,b)=>a+Math.random()*(b-a),clamp=(v,a,b)=>Math.max(a,Math.min(b,v)),hyp=Math.hypot;
+const kids=[{el:$('kid1'),arm:$('arm1'),hand:$('hand1'),y:D/2-0.3,lo:0.15,hi:D/2-0.02,rest:D/2-0.3,hx:KX,hy:0,cd:0},
+            {el:$('kid2'),arm:$('arm2'),hand:$('hand2'),y:D/2+0.3,lo:D/2+0.02,hi:D-0.15,rest:D/2+0.3,hx:KX,hy:0,cd:0}];
+const bots={cozmo:{el:$('rC'),name:'Cozmo',lo:EDGE,hi:D/2-0.08,home:[2.838,0.603]},
+            mip:{el:$('rM'),name:'MiP',lo:D/2+0.08,hi:D-EDGE,home:[2.838,1.023]}};
+const PLANS=[['people','robots','out','people','stuck','people','robots','out','people','robots','people'],
+             ['robots','people','stuck','people','robots','out','people','robots','people','people']];
+let G,playing=false,last=0,gameNo=0;
+function reset(){G={pts:{people:0,robots:0},phase:'count',t:0,server:'people',b:{x:-9,y:D/2,vx:0,vy:0},outT:0,still:0,rest:0,
+  plan:PLANS[gameNo++%2].slice(),pushes:0,need:2,fin:false};
+ kids.forEach(k=>{k.y=k.rest;k.cd=0;});
+ for(const n in bots){const r=bots[n];r.x=r.home[0];r.y=r.home[1];r.h=Math.PI;r.push=0;r.thru=false;}
+ score();msg('Get ready...');big('');cap('Every game starts the same calm way: "Get ready...", then 1, 2, 3 (a beep each), then START!');draw();}
+function msg(s){$('sbMsg').textContent=s;} function cap(s){$('aCap').textContent=s;} function big(s){$('big').textContent=s;}
+function score(){$('sbP').textContent=G.pts.people;$('sbR').textContent=G.pts.robots;}
+function serve(team,why){Object.assign(G,{phase:'serve',server:team,t:0,rest:0,outT:0,still:0,pushes:0,need:1+Math.floor(Math.random()*3),fin:false});
+ const b=G.b;b.vx=0;b.vy=0;b.x=team==='people'?rnd(0.28,0.4):rnd(1.9,2.3);b.y=D/2+rnd(-0.3,0.3);
+ for(const n in bots){bots[n].push=0;bots[n].thru=false;}
+ msg(team==='people'?"People's balloon":"Robot's balloon");
+ cap((why?why+' ':'')+(team==='people'?"People's balloon: it's put down within reach, and a person leans in to tap it toward the robots.":"Robot's balloon: a person puts it down on the robots' side. The robots go back to their pink squares and face the people's goal."));}
+function event(kind,team){G.phase='event';G.t=0;G.b.vx=0;G.b.vy=0;G.fin=false;
+ if(kind==='goal'){G.pts[team]++;score();big('GOAL!');msg('People '+G.pts.people+' – '+G.pts.robots+' Robots');G.next=team;
+  cap(team==='people'?'Goal for the people! The balloon touched the pink goal line between the posts. Cozmo looks sad for a moment.':'Goal for the robots! Cozmo looks happy and lifts his arms a little.');}
+ else{const side=G.b.x<W/2?'people':'robots';G.next=side;big(kind==='out'?'Out!':'Stuck!');msg(kind==='out'?'Out!':'Stuck!');
+  cap(kind==='out'?'Out! The balloon was outside the tape for half a second. It went out on the '+(side==='people'?"people's":"robots'")+' side, so they get the balloon. Cozmo looks surprised.'
+   :'Stuck! The balloon sat still for 10 seconds where nobody could reach it. It\'s on the '+(side==='people'?"people's":"robots'")+' side, so they serve again.');}}
+function finisher(team){const want=G.plan[0];if(!want||G.pushes<G.need)return null;
+ if(want==='stuck'){if(team!=='robots'||G.b.x<1.0)return null;G.plan.shift();return [-1,G.b.y,(G.b.x-0.645)*0.5];}
+ if(want==='out'){G.plan.shift();return [team==='people'?rnd(1.9,2.5):rnd(0.6,1.2),Math.random()<0.5?-0.6:D+0.6,1.4];}
+ if(want!==team)return null;G.plan.shift();
+ return team==='people'?[W+0.2,D/2+rnd(-0.12,0.12),1.9]:[-0.2,D/2+rnd(-0.12,0.12),1.7];}
+function hit(b,tx,ty,sp){const d=hyp(tx-b.x,ty-b.y)||1;b.vx=(tx-b.x)/d*sp;b.vy=(ty-b.y)/d*sp;}
+function stepBall(dt){const b=G.b,k=Math.exp(-0.5*dt);b.vx*=k;b.vy*=k;b.x+=b.vx*dt;b.y+=b.vy*dt;
+ if(hyp(b.vx,b.vy)<0.02){b.vx=0;b.vy=0;}
+ if(G.phase!=='play')return;
+ const inMouth=b.y>MOUTH[0]&&b.y<MOUTH[1];
+ if(inMouth&&b.x-RB<=0&&b.vx<0)return event('goal','robots');
+ if(inMouth&&b.x+RB>=W&&b.vx>0)return event('goal','people');
+ const outside=b.y<0||b.y>D||((b.x<0||b.x>W)&&!inMouth);
+ G.outT=outside?G.outT+dt:0;if(G.outT>=0.5)return event('out');
+ G.still=(b.vx===0&&b.vy===0)?G.still+dt:0;if(G.still>=10)return event('stuck');
+ if(G.fin&&b.vx===0&&b.vy===0)G.fin=false;}
+function stepKids(dt){const b=G.b;
+ kids.forEach((k,i)=>{k.cd-=dt;
+  let ty=k.rest;
+  if(G.phase==='play'||G.phase==='serve'){if(b.x<W/2&&b.y>=k.lo-0.25&&b.y<=k.hi+0.25)ty=b.y;}
+  ty=clamp(ty,k.lo,k.hi);const dy=ty-k.y;k.y+=clamp(dy,-0.5*dt,0.5*dt);
+  const sx=KX+0.06,dx=b.x-sx,dyb=b.y-k.y,d=hyp(dx,dyb);
+  let reach=0;if((G.phase==='play'||G.phase==='serve')&&b.x>-0.5&&d<ARM+RB+0.25)reach=Math.min(ARM,Math.max(0.12,d-RB*0.8));
+  else reach=0.12;
+  const ux=d?dx/d:1,uy=d?dyb/d:0;const want=[sx+ux*reach,k.y+uy*reach];
+  k.hx+=(want[0]-k.hx)*Math.min(1,dt*8);k.hy+=(want[1]-k.hy)*Math.min(1,dt*8);
+  const canHit=G.phase==='play'&&!G.fin&&k.cd<=0&&d<=ARM+RB*0.9&&b.x<W/2;
+  if(canHit){if(Math.random()<0.2){k.cd=1.4;cap('A person leans in, reaches for the balloon and misses.');}
+   else{G.pushes++;const f=finisher('people');if(f){hit(b,f[0],f[1],f[2]);G.fin=true;}else hit(b,W,D/2+rnd(-0.45,0.45),rnd(1.4,1.8));k.cd=1.2;
+    cap('A person leans over the goal line and taps the balloon toward the robots. Arms hit harder than the robots push.');}}});}
+function stepBots(dt){const b=G.b;
+ for(const n in bots){const r=bots[n];let tx=r.x,ty=r.y,face=null;
+  const inStrip=b.y>=r.lo-0.12&&b.y<=r.hi+0.12,reach=b.x>=REACH-0.05&&b.x<=W;
+  if(G.phase==='serve'||G.phase==='count'){tx=r.home[0];ty=r.home[1];if(hyp(r.x-tx,r.y-ty)<0.02)face=Math.PI;}
+  else if(G.phase==='play'&&inStrip&&reach){const u=hyp(0-b.x,D/2-b.y)||1,ux=-b.x/u,uy=(D/2-b.y)/u;
+   const bx=b.x-ux*(RB+0.13),by=b.y-uy*(RB+0.13);
+   const cbx=clamp(bx,REACH,W-EDGE),cby=clamp(by,r.lo,r.hi);
+   if(hyp(cbx-bx,cby-by)>0.06&&b.vx===0&&b.vy===0)r.thru=true;      // can't get behind it by the tape
+   if(r.thru||r.push>0||hyp(r.x-bx,r.y-by)<0.07){if(!r.thru)r.push=Math.max(r.push,0.01);tx=b.x;ty=b.y;}else{tx=bx;ty=by;}}
+  else if(G.phase==='play'){r.push=0;r.thru=false;if(r.x<W/2)tx=W/2+0.08;}   // waits; back over the centre line first
+  tx=clamp(tx,REACH,W-EDGE);ty=clamp(ty,r.lo,r.hi);
+  const dx=tx-r.x,dy=ty-r.y,d=hyp(dx,dy);
+  if(d>0.01){const s=Math.min(d,0.20*dt);r.x+=dx/d*s;r.y+=dy/d*s;face=Math.atan2(dy,dx);}
+  if(face!==null){let dh=face-r.h;while(dh>Math.PI)dh-=2*Math.PI;while(dh<-Math.PI)dh+=2*Math.PI;r.h+=clamp(dh,-3*dt,3*dt);}
+  if(r.push>0)r.push+=dt;
+  if(r.push>4){r.push=0;r.thru=true;}
+  if(G.phase==='play'&&!G.fin&&(r.push>0||r.thru)&&hyp(r.x-b.x,r.y-b.y)<RB+0.07){
+   if(r.thru){hit(b,W*0.4,D/2+rnd(-0.2,0.2),rnd(0.6,0.8));cap(r.name+' can\'t get behind the balloon by the tape, so it drives through it to knock it back into play.');}
+   else{G.pushes++;const f=finisher('robots');if(f){hit(b,f[0],f[1],f[2]);G.fin=true;}else hit(b,0,D/2+rnd(-0.3,0.3),rnd(0.8,1.0));
+    cap(r.name+' gets behind the balloon and pushes it toward the people\'s goal.');}
+   r.push=0;r.thru=false;}
+  if(G.phase==='play'&&!G.fin){const dd=hyp(b.x-r.x,b.y-r.y);if(dd<RB+0.06&&dd>0){b.x=r.x+(b.x-r.x)/dd*(RB+0.06);b.y=r.y+(b.y-r.y)/dd*(RB+0.06);}}}}
+function tick(dt){G.t+=dt;
+ if(G.phase==='count'){const seq=['Get ready...','1','2','3','START!'];const i=Math.min(4,Math.floor(G.t/1.2));msg(seq[i]);big(i>0?seq[i]:'');if(G.t>=6){big('');serve('people','START!');}}
+ else if(G.phase==='serve'){G.rest+=dt;big('');if(G.rest>1.4&&$('sbMsg').textContent!=='Play!'){msg('Play!');cap('The balloon has sat on the floor for a second, so the scoreboard says "Play!".');}if(G.rest>1.9){G.phase='play';G.still=0;}}
+ else if(G.phase==='event'){if(G.t>2.6){big('');
+   if(G.pts.people>=5||G.pts.robots>=5){G.phase='end';G.t=0;const w=G.pts.people>=5?'People win!':'Robots win!';big(w);msg(w);cap(w+' First team to 5 goals wins. A new game starts with the start sequence again.');}
+   else serve(G.next,'');}}
+ else if(G.phase==='end'){if(G.t>5)reset();}
+ stepBall(dt);stepKids(dt);stepBots(dt);}
+function draw(){kids.forEach(k=>{k.el.setAttribute('transform',`translate(${X(KX)},${Y(k.y)})`);
+  k.arm.setAttribute('x1',X(KX+0.06));k.arm.setAttribute('y1',Y(k.y));k.arm.setAttribute('x2',X(k.hx));k.arm.setAttribute('y2',Y(k.hy));
+  k.hand.setAttribute('cx',X(k.hx));k.hand.setAttribute('cy',Y(k.hy));});
+ for(const n in bots){const r=bots[n];r.el.setAttribute('transform',`translate(${X(r.x)},${Y(r.y)}) rotate(${r.h*180/Math.PI})`);}
+ const b=G.b;$('ball').setAttribute('cx',X(b.x));$('ball').setAttribute('cy',Y(b.y));$('ball').style.display=G.phase==='count'?'none':'';}
+function frame(now){if(!playing)return;let total=Math.min(0.25,Math.max(0,(now-last)/1000))*SPEED;last=now;while(total>1e-6){const s=Math.min(0.05,total);tick(s);total-=s;}draw();requestAnimationFrame(frame);}
+function setPlay(on){playing=on;$('aPlay').textContent=on?'Pause':'Play';$('aPlay').setAttribute('aria-pressed',on?'true':'false');if(on){last=performance.now();requestAnimationFrame(frame);}}
+$('aPlay').addEventListener('click',()=>setPlay(!playing));
+$('aRestart').addEventListener('click',()=>{reset();if(!playing)setPlay(true);});
+kids.forEach(k=>{k.hx=KX+0.18;k.hy=k.y;});reset();
+if('IntersectionObserver' in window){new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting&&playing)setPlay(false);})).observe($('pitch'));}
+})();
+</script>
+
+<section class="wip" aria-labelledby="sstatus">
+<h2 id="sstatus" class="wip-title">Progress</h2>
+<p class="small">Last updated 13 November 2026</p>
+<h3>Done</h3>
+<ul class="done">
+<li>Real games: MiP alone, Cozmo alone, and both robots together.</li>
+<li>The game screen, started from a button on the Mac's desktop.</li>
+<li>Voice commands "start" and "stop", a start sequence, and game sound effects.</li>
+<li>Cozmo's personality: his eyes, faces, arm lifts and quiet sounds.</li>
+<li>MiP's Bluetooth reconnects by itself if it drops.</li>
+</ul>
+<h3>Coming next</h3>
+<ol>
+<li>A live game with the newest changes: a robot whose strip doesn't have the balloon now waits where it is, and a goal only counts when the balloon rolls in from inside the arena.</li>
+<li>Checking MiP's sounds by ear.</li>
+<li>Full games with people playing.</li>
+</ol>
+<p><strong>Safety:</strong> people aren't tracked, so the robots don't slow down near them. A grown-up always watches, and speeds stay low.</p>
+</section>
+
+<figure class="svgfig wide">
+<div class="hscroll"><svg viewBox="0 0 720 430" role="img" aria-labelledby="pitchT pitchD">
+<title id="pitchT">The floor soccer pitch, seen from above</title>
+<desc id="pitchD">The arena seen from above. The two people kneel outside the arena, behind the people's goal line on the left end, and reach in with their hands and arms. The robots defend the goal on the right end. The arena is split the long way into two strips: Cozmo's strip at the back (top) and MiP's strip at the front (bottom). Each strip runs from the robots' goal across the centre line to the robots' reach line, halfway into the people's half. The robots never go past the reach line.</desc>
+<text x="360" y="28" class="lbl muted" text-anchor="middle">Back (top of the camera picture)</text>
+<rect x="210" y="50" width="450" height="160" class="lane-c"/>
+<rect x="210" y="210" width="450" height="160" class="lane-m"/>
+<rect x="60" y="50" width="600" height="320" class="t-purple"/>
+<line x1="360" y1="50" x2="360" y2="370" class="t-pink"/>
+<line x1="210" y1="210" x2="660" y2="210" class="lane-split"/>
+<line x1="210" y1="56" x2="210" y2="364" class="reach"/>
+<line x1="60" y1="139" x2="60" y2="281" class="t-goal"/>
+<line x1="660" y1="139" x2="660" y2="281" class="t-goal"/>
+<path d="M48 139 h24 M48 281 h24 M648 139 h24 M648 281 h24" class="t-post"/>
+<text x="135" y="100" class="lbl" text-anchor="middle">People kneel</text>
+<text x="135" y="118" class="sm muted" text-anchor="middle">behind their goal line</text>
+<text x="135" y="134" class="sm muted" text-anchor="middle">and reach in to tap it</text>
+<g class="kneel"><ellipse cx="30" cy="180" rx="13" ry="22"/><circle cx="34" cy="180" r="9" class="khead"/><line x1="40" y1="170" x2="92" y2="160" class="karm"/></g>
+<g class="kneel"><ellipse cx="30" cy="250" rx="13" ry="22"/><circle cx="34" cy="250" r="9" class="khead"/><line x1="40" y1="260" x2="80" y2="268" class="karm"/></g>
+<text x="510" y="110" class="lbl" text-anchor="middle">Cozmo's strip (back)</text>
+<text x="510" y="128" class="sm muted" text-anchor="middle">guards the back half of the goal</text>
+<text x="510" y="300" class="lbl" text-anchor="middle">MiP's strip (front)</text>
+<text x="510" y="318" class="sm muted" text-anchor="middle">guards the front half of the goal</text>
 <rect x="589" y="139" width="59" height="59" class="sq-pink"/>
 <rect x="589" y="222" width="59" height="59" class="sq-pink"/>
 <text x="618" y="173" class="sm" text-anchor="middle">Cozmo</text>
 <text x="618" y="256" class="sm" text-anchor="middle">MiP</text>
-<circle cx="330" cy="150" r="22" class="balloon"/>
+<circle cx="300" cy="150" r="22" class="balloon"/>
 <text x="74" y="215" class="sm muted">people's</text><text x="74" y="231" class="sm muted">goal</text>
 <text x="690" y="205" class="sm muted" text-anchor="middle">robots'</text><text x="690" y="221" class="sm muted" text-anchor="middle">goal</text>
-<text x="360" y="396" class="lbl muted" text-anchor="middle">Front</text>
-<text x="360" y="414" class="sm muted" text-anchor="middle">Pink centre line: nobody crosses it. Only the balloon does.</text>
+<text x="210" y="390" class="sm" text-anchor="middle">robots' reach line</text>
+<text x="360" y="390" class="sm" text-anchor="middle" dx="62">centre line</text>
+<text x="360" y="418" class="sm muted" text-anchor="middle">The robots can go past the centre line, up to the reach line. People stay outside, behind their goal line.</text>
 </svg></div>
-<figcaption>Seen from above. The goals are 72 cm wide, in the middle of each short end. The robots wait in the pink squares before play.</figcaption>
+<figcaption>Seen from above. The goals are 72 cm wide, in the middle of each short end. The people kneel just outside the arena, behind their goal line. The robots start in the pink squares by their goal.</figcaption>
 </figure>
+
+<h2 id="safety">Safety</h2>
+<!-- SAFETY -->
 
 <h2 id="rules">The rules</h2>
 <ol>
-<li><strong>Two teams:</strong> two people against Cozmo and MiP. Each team stays on its own side of the pink centre line. Only the balloon crosses.</li>
-<li><strong>Nobody kicks.</strong> People push the balloon along the floor with their hands, and the robots push it with their bodies. That's why the start of play is called a <strong>serve</strong>, not a kick-off.</li>
-<li><strong>A new game</strong> starts with the people serving toward the robots.</li>
-<li><strong>A goal</strong> counts when the balloon, on the floor, crosses the goal line between the posts. A balloon in the air doesn't count.</li>
-<li><strong>After a goal,</strong> the team that scored serves.</li>
-<li><strong>After "Out!"</strong> (the balloon leaves the arena anywhere else), the team whose side it went out on serves.</li>
+<li><strong>Two teams:</strong> two people against Cozmo and MiP. The people kneel behind their own goal line, outside the arena, and can lean over the line as far as they like. They never step in. The robots may cross the centre line, but only up to their reach line, halfway into the people's half.</li>
+<li><strong>Nobody kicks.</strong> People hit or tap the balloon with their hands and arms, and the robots push it with their bodies. People's arms hit harder than the robots push.</li>
+<li><strong>Serving:</strong> the scoreboard shows whose turn it is with "People's balloon" or "Robot's balloon". A new game starts with the people's balloon, served toward the robots. For the robot's balloon, a person puts it down on the robots' side, and the robots go back to their pink squares, facing the people's goal. Once the balloon has sat on the floor on that side for about a second, the scoreboard says <strong>"Play!"</strong>.</li>
+<li><strong>A goal</strong> counts as soon as the balloon, rolling on the floor from inside the arena, touches the pink goal line between the two pink posts. A balloon in the air, one carried back in through the goal, or one put down on the line at a serve doesn't count.</li>
+<li><strong>After a goal,</strong> the team that scored gets the balloon.</li>
+<li><strong>"Out!"</strong> is called once the balloon has been outside the arena for half a second. The team whose side it went out on gets the balloon.</li>
+<li><strong>"Stuck!"</strong> If the balloon doesn't move for 10 seconds, somewhere nobody can reach, the scoreboard says "Stuck!" and the team whose side it's on serves again.</li>
 <li><strong>First team to 5 goals wins.</strong></li>
 </ol>
-<p>When it's the robots' serve, a person puts the balloon down on the robots' side. Once the balloon has sat on the floor on the serving side for about a second, the scoreboard says <strong>"Play!"</strong>.</p>
 
-<h2 id="defence">How the robots defend</h2>
-<p>The robots' half is split into two lanes, so the two robots never bump into each other:</p>
+<h2 id="start">How a game starts</h2>
+<p>Every game, first or new, begins the same calm way, on both the game screen and the scoreboard:</p>
+<ol class="countdown" aria-label="Start sequence">
+<li>"Get ready..."</li>
+<li>1 <span class="small">(beep)</span></li>
+<li>2 <span class="small">(beep)</span></li>
+<li>3 <span class="small">(beep)</span></li>
+<li><strong>START!</strong></li>
+</ol>
+<p>The robots wait, and don't move until START!.</p>
+
+<h2 id="robots-play">How the robots play</h2>
 <ul>
-<li><strong>Cozmo</strong> has the back lane and guards the back half of the goal.</li>
-<li><strong>MiP</strong> has the front lane and guards the front half of the goal.</li>
-<li>Each robot slides along just in front of the goal line, staying between the balloon and its half of the goal.</li>
-<li>When the balloon comes into a robot's lane, that robot goes out, gets behind it and pushes it back toward the people's goal.</li>
-<li>Neither robot ever leaves its lane, crosses the centre line or leaves the arena.</li>
+<li><strong>Two long strips:</strong> the arena is split in two the long way. Cozmo has the back strip and guards the back half of the goal; MiP has the front strip and guards the front half.</li>
+<li><strong>Going for the balloon:</strong> when the balloon is in a robot's strip and within reach, that robot gets behind it and pushes it toward the people's goal. Either robot can score.</li>
+<li><strong>Waiting:</strong> during play, a robot that isn't going for the balloon waits where it is. If it's over the centre line, it first goes back just over it. The robots go back to their pink squares only at a serve, and face the people's goal there.</li>
+<li><strong>Knocking it free:</strong> if a robot can't get behind a balloon resting by the tape, it drives through it to knock it back into play.</li>
+<li><strong>Same speed:</strong> both robots have the same top speed, 0.20 m/s, which is Cozmo's fastest.</li>
+<li><strong>Keeping apart:</strong> neither robot enters the other's strip. When they're close (35 cm), the robot that isn't going for the balloon won't drive toward the other, and when they're very close (20 cm) neither does. In simulation they never got closer than 19 cm.</li>
+<li><strong>Staying inside the tape:</strong> the robots keep about 20 cm inside the purple border and slow down near it.</li>
 </ul>
-<p>In simulation, guarding robots let in about a third fewer goals than robots standing still, and they always stayed at least 28 cm apart.</p>
+
+<h2 id="personality">Cozmo's and MiP's personalities</h2>
+<ul>
+<li><strong>Cozmo's eyes</strong> blink as usual while he plays.</li>
+<li><strong>Cozmo's faces</strong> change at game moments: happy at "Play!" and a new game, surprised at "Out!", and sad when the people score.</li>
+<li><strong>Cozmo's arms</strong> give a small lift at happy moments and when he sets off after the balloon.</li>
+<li><strong>Cozmo's sounds:</strong> a quiet hum or giggle every so often while he plays, and a "vroom" when he sets off after the balloon.</li>
+<li><strong>Both robots</strong> react quietly in their own voices to goals, "Out!", wins and a new game.</li>
+</ul>
+
+<h2 id="sounds">Game sounds</h2>
+<p>Short, quiet sound effects play on the Mac's speakers, at the Mac's volume:</p>
+<div class="table-wrap"><table>
+<thead><tr><th>When</th><th>What you hear</th></tr></thead>
+<tbody>
+<tr><td>Countdown</td><td>A beep for each of 1, 2, 3</td></tr>
+<tr><td>START!</td><td>A cheerful start sound</td></tr>
+<tr><td>A goal</td><td>A goal sound, for either team</td></tr>
+<tr><td>A win</td><td>The goal sound, then a win sound</td></tr>
+<tr><td>Near miss</td><td>A "so close" sound when the balloon nearly goes in, and the screen says "So close!"</td></tr>
+<tr><td>Out</td><td>An out sound for each "Out!"</td></tr>
+<tr><td>A robot's missed push</td><td>A miss sound when a robot pushes for a second or more but the balloon barely moves</td></tr>
+<tr><td>Game stopped</td><td>A stop sound</td></tr>
+</tbody></table></div>
+<p class="small">Near misses and missed pushes sound at most once every 5 seconds. The sound files aren't in the code on GitHub, because they come from the Angry Birds app: add your own quiet clips (see <a href="/run/#robots">step 9 of Run it yourself</a>).</p>
+
+<h2 id="screen">The game screen</h2>
+<p>A button on the Mac's desktop, <strong>Keepy Up Soccer</strong>, opens one calm screen that runs the whole game:</p>
+<ol>
+<li><strong>Choose the robots:</strong> <kbd>A</kbd> both, <kbd>C</kbd> Cozmo, <kbd>M</kbd> MiP. It remembers your last choice.</li>
+<li><strong>A checklist</strong> of what to do before playing. It checks the Mac is on Cozmo's Wi-Fi, and says when to move Cozmo from his charger into his pink square.</li>
+<li><strong>During the game:</strong> the score in big numbers, what each robot is doing, and MiP's battery, with a red warning under 25%.</li>
+<li><strong>At the end:</strong> a summary, and the choice to play again.</li>
+</ol>
+<div class="table-wrap"><table>
+<thead><tr><th>Key</th><th>Voice</th><th>What it does</th></tr></thead>
+<tbody>
+<tr><td><kbd>Return</kbd></td><td>"start"</td><td>Start the game. Saying "start" also carries on after a pause.</td></tr>
+<tr><td><kbd>P</kbd></td><td></td><td>Pause, or carry on</td></tr>
+<tr><td><kbd>N</kbd></td><td></td><td>New game: back to 0–0, with the start sequence</td></tr>
+<tr><td><kbd>Q</kbd></td><td>"stop"</td><td>Stop the game. The robots stop their wheels first.</td></tr>
+</tbody></table></div>
+<p>Voice commands are offline: the laptop's microphone listens for "start" and "stop" only, and nothing is recorded or saved. Only one game window can be open at a time, and closing it stops the robots.</p>
+
+<h2 id="reliability">Making it reliable</h2>
+<p>The Mac uses one radio for both Cozmo's Wi-Fi and MiP's Bluetooth. Before these fixes, MiP dropped out several times a minute when both robots played:</p>
+<ul>
+<li><strong>MiP reconnects by itself</strong> when its Bluetooth drops, and the game carries on. Cozmo keeps playing meanwhile. In the first full game it dropped 4 times and came back each time.</li>
+<li><strong>Less Wi-Fi traffic to Cozmo:</strong> the game only sends Cozmo a new wheel command when it changes.</li>
+<li><strong>Cozmo's software</strong> had fallen back to a recovery mode, where he connected but wouldn't move. Connecting him once with the official Cozmo app updated it.</li>
+<li><strong>Cozmo starts on his charger,</strong> and the game screen says when to move him into the arena.</li>
+</ul>
 
 <h2 id="goals">Goal width</h2>
 <p>We're keeping the goals at <strong>72 cm</strong>, as taped. In simulation with our real balloon and both robots guarding, 72 cm goals were very hard to score on:</p>
@@ -76,18 +306,34 @@
 <tr><td>85 cm</td><td>23</td></tr>
 <tr><td>1 m</td><td>35</td></tr>
 </tbody></table></div>
-<p>Real people play differently from the simulation, so we'll check in real games. If people can't score, we'll widen the goals: move the pink posts, then change <code>GOAL_WIDTH</code> in <code>tracker/room.py</code> to the new width in metres, so the scoreboard and robots match the tape.</p>
+<p>Real people play differently from the simulation, and people did score in the robot tests. We'll check in full games with people, and widen the goals if it's too hard: move the pink posts, then change <code>GOAL_WIDTH</code> in <code>tracker/room.py</code> to the new width in metres.</p>
 
 <h2 id="run">Run it</h2>
-<p>First set up the camera, arena, robot markers and balloon: steps 1–9 of <a href="/run/">Run it yourself</a>. Then open three Terminal windows, all in the <code>tracker</code> folder with the environment switched on.</p>
-<p><strong>Terminal 1</strong> runs the tracker:</p>
+<p>First set up the camera, arena, robot markers and balloon: steps 1–9 of <a href="/run/">Run it yourself</a>.</p>
+<h3>The easy way: the game screen</h3>
+<p>In Terminal, from the <code>tracker</code> folder with the environment switched on (step 2 of <a href="/run/#install">Run it yourself</a>):</p>
+<pre><code>python play_soccer.py</code></pre>
+<p>It starts the camera, the scoreboard and the robots for you. To try it with no robots moving, add <code>--dry-run</code>. To turn the microphone off, add <code>--no-voice</code>.</p>
+<details>
+<summary>Make a desktop button, like ours</summary>
+<p>On our Mac, a <strong>Keepy Up Soccer</strong> button on the desktop opens the game screen with a double-click. To make your own, save these lines in a plain text file on your desktop called <code>Keepy Up Soccer.command</code>, changing the first <code>cd</code> line if your code is somewhere else:</p>
+<pre><code>#!/bin/bash
+cd ~/keepy-up/tracker || exit 1
+exec .venv/bin/python play_soccer.py "$@"</code></pre>
+<p>Then, in Terminal, make it runnable once:</p>
+<pre><code>chmod +x ~/Desktop/"Keepy Up Soccer.command"</code></pre>
+<p>The first time you double-click it, macOS may ask: right-click it, choose <strong>Open</strong>, then <strong>Open</strong> again.</p>
+</details>
+<p class="small">The game keeps a log of each game on the laptop, in the <code>logs</code> folder. Nothing is sent anywhere, and no pictures or sound are saved.</p>
+<details>
+<summary>By hand, in three Terminal windows</summary>
+<p><strong>Terminal 1</strong>, the tracker:</p>
 <pre><code>python tracker.py --source 0</code></pre>
-<p><strong>Terminal 2</strong> runs the referee and scoreboard. The robots defend the right-hand goal and the people the left:</p>
+<p><strong>Terminal 2</strong>, the referee and scoreboard. The robots defend the right-hand goal:</p>
 <pre><code>python soccer.py</code></pre>
-<p>Scoreboard keys: <kbd>Space</kbd> pauses or resumes, <kbd>R</kbd> starts a new game, <kbd>K</kbd> serves again, and <kbd>Q</kbd> quits. To swap ends, add <code>--robots-defend left</code> here and in Terminal 3.</p>
-<p><strong>Terminal 3</strong> runs the robots. Start with a dry run, where nothing moves and it prints where the robots would go:</p>
-<pre><code>python chase.py --game soccer --dry-run</code></pre>
-<p>Then the real robots, one at a time, then both:</p>
-<pre><code>python chase.py --game soccer --only cozmo
-python chase.py --game soccer</code></pre>
-<p><strong>Press <kbd>Ctrl</kbd>+<kbd>C</kbd> in Terminal 3 to stop the robots.</strong> The same safety stops as keepy uppy apply: see <a href="/run/#safety">Safety and known limits</a>.</p>
+<p><strong>Terminal 3</strong>, the robots. Start with a dry run, then the real robots:</p>
+<pre><code>python chase.py --game soccer --max-speed 0.20 --max-turn 180 --dry-run
+python chase.py --game soccer --max-speed 0.20 --max-turn 180</code></pre>
+<p>Scoreboard keys: <kbd>Space</kbd> pauses, <kbd>R</kbd> starts a new game, <kbd>K</kbd> serves again, and <kbd>Q</kbd> quits. <strong>Press <kbd>Ctrl</kbd>+<kbd>C</kbd> in Terminal 3 to stop the robots.</strong></p>
+</details>
+<p>Before playing, go through the <a href="#safety">safety rules</a> above.</p>

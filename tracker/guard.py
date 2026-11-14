@@ -6,8 +6,8 @@ Used by chase.py --game soccer. This file only works out WHERE each robot should
 go; chase.py does the driving and all the safety stops.
 
 How the robots play (10 Nov rule: robots may cross the centre line and go up to
-halfway into the people's half, never the half by the people's goal; people
-still stay on their own side):
+halfway into the people's half, never the half by the people's goal; 13 Nov:
+people stay behind their own goal line, outside the arena, and reach in):
   - Strips: the arena is cut in two the long way. Cozmo has the back strip (the
     back post's half of the goal), MiP the front strip. Each strip runs from the
     robots' goal into the people's half, up to the reach line. A robot never
@@ -36,6 +36,14 @@ GET_BEHIND = 0.12      # m: a clearing robot lines up this far behind the balloo
 PUSH_THROUGH = 0.36    # m: then drives this far past the balloon's middle to push it (was 0.30)
 BALLOON_RADIUS = 0.154 # m: half the measured balloon (30.8 cm, 10 Nov); chase.py passes the saved size
 LANES = {"cozmo": "back", "mip": "front"}   # back = top of the camera picture (small y)
+# Nudge (13 Nov): a balloon resting by the tape can't be got behind (robots keep 20 cm
+# from the tape), so the robot stood next to it for good. When the robot is at the
+# closest spot it may use and that spot is well short of where it needs to be, it
+# drives through the balloon toward the people's goal for a moment instead.
+NUDGE_SHORT = 0.05     # m: its get-behind spot had to move at least this far to stay inside
+NUDGE_AT = 0.10        # m: and the robot is this close to the spot it was moved to
+NUDGE_FRAMES = 30      # camera pictures to keep nudging (about 2 s)...
+NUDGE_DONE = 0.10      # m: ...or until the balloon has moved this far
 STRIP_HOLD = 0.05      # m: an attacking robot keeps going till the balloon is this far into the other strip
 
 
@@ -49,6 +57,7 @@ class Guard:
         self.robots_defend = robots_defend
         self.goal_width = goal_width
         self.clearing = set()        # robots out attacking the balloon
+        self.nudging = {}            # robot: (pictures left, balloon x, y when it started)
         # A robot playing alone (e.g. chase.py --only mip) gets the whole side and goal.
         self.solo = players[0] if players and len(players) == 1 else None
         # 13 Nov: a robot whose strip doesn't have the balloon stops where it is instead of
@@ -124,14 +133,24 @@ class Guard:
         robots = {n: r for n, r in robots.items() if r.get("seen", True)}
         bx, by = balloon["x"], balloon["y"]
         self.clearing = {n for n in robots if self.should_attack(n, balloon, width, depth)}
+        self.nudging = {n: v for n, v in self.nudging.items() if n in self.clearing}
 
         out = {}
         gx = roomlib.goals(width, depth, self.goal_width)[self.robots_defend][0]
         for name, robot in robots.items():
             if name in self.clearing:
                 tx, ty, role = self.clear_target(robot, bx, by, width, depth, balloon_radius)
-            elif not self.serving and self.solo is None and self.on_robots_side(bx, width, 0):
-                tx, ty, role = robot["x"], robot["y"], "wait"   # in the other's strip: stay put
+                tx, ty, role = self.nudge(name, robot, tx, ty, role, bx, by, width, depth)
+            elif not self.serving:
+                # During play a robot not going for the balloon doesn't race back to its square
+                # (13 Nov): over the centre line, it just goes back over it; then it waits.
+                half = self.half_size(robot)
+                if self.robots_defend == "right" and robot["x"] - half < width / 2:
+                    tx, ty, role = width / 2 + half + CENTRE_GAP, robot["y"], "back over the line"
+                elif self.robots_defend == "left" and robot["x"] + half > width / 2:
+                    tx, ty, role = width / 2 - half - CENTRE_GAP, robot["y"], "back over the line"
+                else:
+                    tx, ty, role = robot["x"], robot["y"], "wait"
             else:
                 y_lo, y_hi = self.goal_part(name, depth)
                 aim = (y_lo + y_hi) / 2                   # middle of its half of the goal
@@ -142,6 +161,26 @@ class Guard:
                 tx, role = lx, "guard"
             out[name] = (*self.keep_inside(name, tx, ty, robot, width, depth), role)
         return out
+
+    def nudge(self, name, robot, tx, ty, role, bx, by, width, depth):
+        """If the robot can't get behind the balloon (it's by the tape), push through it instead."""
+        if name in self.nudging:
+            left, x0, y0 = self.nudging[name]
+            if left > 0 and math.hypot(bx - x0, by - y0) < NUDGE_DONE:
+                self.nudging[name] = (left - 1, x0, y0)
+                return self.push_through(bx, by, width, depth)
+            del self.nudging[name]
+        elif role == "get behind":
+            cx, cy = self.keep_inside(name, tx, ty, robot, width, depth)
+            if (math.hypot(cx - tx, cy - ty) > NUDGE_SHORT
+                    and math.hypot(robot["x"] - cx, robot["y"] - cy) < NUDGE_AT):
+                self.nudging[name] = (NUDGE_FRAMES, bx, by)
+                return self.push_through(bx, by, width, depth)
+        return tx, ty, role
+
+    def push_through(self, bx, by, width, depth):
+        ux, uy = self.push_direction(bx, by, width, depth)
+        return bx + ux * PUSH_THROUGH, by + uy * PUSH_THROUGH, "push"
 
     def push_direction(self, bx, by, width, depth):
         """Unit vector from the balloon toward the middle of the people's goal."""

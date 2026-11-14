@@ -15,13 +15,18 @@ Last updated: 13 November 2026
 - [x] Robot tags printed at the right size: Cozmo 4 cm (tag 1), MiP 5 cm (tag 2)
 - [x] Robots stay inside the play area. Soccer (10 Nov rule): robots may cross the
       centre line and go up to halfway into the people's half, never the half by the
-      people's goal. People stay on their own side.
+      people's goal. People stay behind their own goal line, outside the arena, and reach
+      in to hit or tap the balloon with their hands and arms (13 Nov; harder than the
+      robots push).
 - [x] Soccer scorekeeper: goals, "Out!", score, serve rules
-  - Nobody kicks: people push the balloon by hand, robots with their bodies
+  - Nobody kicks: people hit or tap the balloon with their hands and arms from behind
+    their goal line, robots push it with their bodies
   - New game: people serve toward the robots
   - After a goal: the team that scored serves from their side
   - After "Out!": the team whose side it went out on serves
-  - First team to 5 goals wins
+  - The first goal wins the game (13 Nov; was first to 5)
+  - Stuck (13 Nov): a balloon that doesn't move for 10 seconds (somewhere nobody can
+    reach) is served again by the team whose side it's on
   - Goal: counts as soon as the balloon, rolling on the floor from inside the arena,
     touches the pink goal line between the two pink posts (decided 12-13 Nov). Coming back
     in through the goal, or a serve put down on the line, doesn't count.
@@ -251,7 +256,8 @@ Last updated: 13 November 2026
 
 25. [x] Goal width: keep 72 cm as taped; revisit after real games (see 7).
 26. [x] After "Out!": the team whose side the balloon went out on serves.
-27. [x] How a soccer game is won: the first team to 5 goals wins. R starts a new game.
+27. [x] How a soccer game is won: the first goal wins (13 Nov; was first to 5). n in the
+        game window starts a new game.
 28. [x] Sounds: the robots' own voices, quietly (11 Nov). Soccer done (see 19).
 29. [x] Safety: people and children aren't tracked. Checked off by you (12 Nov): a
         grown-up keeps watching, and speeds stay low.

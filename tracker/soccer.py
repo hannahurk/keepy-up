@@ -7,13 +7,14 @@ Floor soccer referee: listens to tracker.py, spots goals and keeps score.
 
 It plays like air hockey: people roll the balloon along the floor and try to
 get it into the robots' goal while defending their own, and the robots do the
-same. People stay on their side of the centre line; the robots may go up to halfway
-into the people's half (never the half by the people's goal). Goals are worked out from the 4 floor crosses (see
+same. People stay behind their own goal line, outside the arena, and reach in to hit or
+tap the balloon with their hands and arms (13 Nov); the robots may go up to halfway into the people's
+half (never the half by the people's goal). Goals are worked out from the 4 floor crosses (see
 tape_guide.py --game soccer), so there's nothing extra to click.
 
 How a game goes:
-  1. Serve: nobody kicks. People push the balloon with their hands and the
-     robots push it with their bodies. A new game always starts with the people
+  1. Serve: nobody kicks. People hit or tap the balloon with their hands and arms from
+     behind their goal line, and the robots push it with their bodies. A new game always starts with the people
      serving from their side, toward the robots. After a goal, the team that
      scored gets the balloon and serves from their own side, toward the other
      team. When the balloon has sat on the floor on that side for a moment, the
@@ -26,7 +27,9 @@ How a game goes:
   3. After a goal, or if the balloon leaves the play area anywhere else, play
      stops until the next serve. After the balloon goes out, the team whose
      side it went out on serves.
-  4. The first team to 5 goals wins. Press R to start a new game.
+  4. Stuck: if the balloon doesn't move for 10 seconds (somewhere nobody can reach),
+     it's served again by the team whose side it's on.
+  5. The first goal wins the game. Then n in the game window (or R here) starts a new game.
 
 Keys in the scoreboard window:
   SPACE pause / resume    R new game (reset the score)    K serve again    Q quit
@@ -38,6 +41,7 @@ Nothing is saved.
 import argparse
 import socket
 import json
+import math
 import threading
 import time
 
@@ -52,12 +56,15 @@ KICKOFF_HOLD = 1.0    # s: balloon must sit on the floor inside the play area th
 GOAL_SHOW = 3.0       # s: how long "GOAL!" stays up
 LOST_NEAR_GOAL = 0.35  # m: lost from view this close to a goal mouth counts as a goal
 LOST_AFTER = 0.5      # s
-WIN_SCORE = 5         # first team to this many goals wins
+WIN_SCORE = 1         # first team to this many goals wins (13 Nov: the first goal wins; was 5)
 # Near miss (12 Nov): the balloon's middle comes within NEAR_GOAL of a goal line, between
 # the posts (give or take NEAR_POSTS), then leaves without a goal: "So close!" sound.
 NEAR_GOAL = 0.30      # m
 NEAR_POSTS = 0.10     # m
 NEAR_EVERY = 5.0      # s: at most one near-miss sound this often
+STUCK_AFTER = 10.0    # s: a balloon that hasn't moved this long in play is served again (13 Nov:
+STUCK_MOVE = 0.03     # m   a strip between the kids' reach and the robots' limit, and the robots'
+                      #     own corners, are places nobody can reach)
 OUT_HOLD = 0.5        # s: the balloon must stay outside the arena this long before "Out!" (12 Nov:
                       # on the edge tape it flickered in and out: 6 calls in 40 s)
 COMMAND_PORT = 8767   # the launcher (play_soccer.py) sends "pause" / "resume" / "new_game" here
@@ -93,6 +100,7 @@ class Referee:
         self.last_near = float("-inf")
         self.out_since = None        # when the balloon was first seen outside the arena
         self.was_inside = False      # last time it was seen, the balloon was inside, clear of the goal lines
+        self.still = None            # (x, y, since) where the balloon has been sitting still
 
     def scorer(self, side):
         """Who scores when the balloon goes into the goal at this end."""
@@ -171,7 +179,7 @@ class Referee:
             elif self.on_spot_since is None:
                 self.on_spot_since = now
             elif now - self.on_spot_since >= KICKOFF_HOLD:
-                self.state, self.last_seen, self.near, self.was_inside = "play", None, None, False
+                self.state, self.last_seen, self.near, self.was_inside, self.still = "play", None, None, False, None
                 self.say("Play!")
                 self.moments.append("play")
             return
@@ -195,6 +203,17 @@ class Referee:
                 self.goal(over_side, now)
                 return
             self.was_inside = over_side is None and 0 <= x <= width and 0 <= y <= depth
+            if self.still is None or math.hypot(x - self.still[0], y - self.still[1]) > STUCK_MOVE:
+                self.still = (x, y, now)
+            elif now - self.still[2] >= STUCK_AFTER:
+                # Nobody can reach it: serve again from the side it's on.
+                self.still, self.near, self.was_inside = None, None, False
+                self.state, self.until = "out", now + 2.0
+                people_half = (x < width / 2) == (self.robots_defend == "right")
+                self.kicks_off = "people" if people_half else "robots"
+                self.say("Stuck! " + ("People's balloon" if people_half else "Robot's balloon"))
+                self.moments.append("stuck")
+                return
             # leaving the zone counts once it's NEAR_POSTS further out, so a wobble doesn't
             near_zone = NEAR_GOAL + (NEAR_POSTS if self.near == "in" else 0)
             self.near_miss(any(abs(x - gx) < near_zone and y0 - NEAR_POSTS <= y <= y1 + NEAR_POSTS
@@ -278,7 +297,8 @@ def draw(ref, msg, connected):
         if b["seen"]:
             cv2.circle(img, P(b["x"], b["y"]), 14, (0, 230, 255), -1)
     keys = "" if ref.new_game_hint.startswith("Press n") else "    SPACE pause   R new game   K serve again   Q quit"
-    cv2.putText(img, f"First to {ref.win_score} wins{keys}", (20, H - 20),
+    first = "First goal wins" if ref.win_score == 1 else f"First to {ref.win_score} wins"
+    cv2.putText(img, f"{first}{keys}", (20, H - 20),
                 cv2.FONT_HERSHEY_SIMPLEX, 0.6, (150, 150, 150), 1, cv2.LINE_AA)
     return img
 
