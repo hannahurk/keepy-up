@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="279mm" height="210mm" viewBox="0 0 279 210">
+<rect width="100%" height="100%" fill="white"/>
+<text x="15" y="14" font-size="5" font-family="Helvetica, Arial">Keepy Up robot tags (tag36h11). Print landscape at 100% scale.</text>
+<line x1="15" y1="22" x2="115" y2="22" stroke="black" stroke-width="0.6"/>
+<line x1="15" y1="19" x2="15" y2="25" stroke="black" stroke-width="0.6"/>
+<line x1="115" y1="19" x2="115" y2="25" stroke="black" stroke-width="0.6"/>
+<text x="120" y="23.5" font-size="4" font-family="Helvetica, Arial">this line should measure exactly 10 cm</text>
+<rect x="29.12" y="51.25" width="50.00" height="50.00" fill="white" stroke="#999" stroke-width="0.3" stroke-dasharray="2,1.5"/>
+<rect x="34.125" y="56.250" width="5.020" height="5.020" fill="black"/>
+<rect x="39.125" y="56.250" width="5.020" height="5.020" fill="black"/>
+<rect x="44.125" y="56.250" width="5.020" height="5.020" fill="black"/>
+<rect x="49.125" y="56.250" width="5.020" height="5.020" fill="black"/>
+<rect x="54.125" y="56.250" width="5.020" height="5.020" fill="black"/>
+<rect x="59.125" y="56.250" width="5.020" height="5.020" fill="black"/>
+<rect x="64.125" y="56.250" width="5.020" height="5.020" fill="black"/>
+<rect x="69.125" y="56.250" width="5.020" height="5.020" fill="black"/>
+<rect x="34.125" y="61.250" width="5.020" height="5.020" fill="black"/>
+<rect x="44.125" y="61.250" width="5.020" height="5.020" fill="black"/>
+<rect x="49.125" y="61.250" width="5.020" height="5.020" fill="black"/>
+<rect x="59.125" y="61.250" width="5.020" height="5.020" fill="black"/>
+<rect x="64.125" y="61.250" width="5.020" height="5.020" fill="black"/>
+<rect x="69.125" y="61.250" width="5.020" height="5.020" fill="black"/>
+<rect x="34.125" y="66.250" width="5.020" height="5.020" fill="black"/>
+<rect x="44.125" y="66.250" width="5.020" height="5.020" fill="black"/>
+<rect x="59.125" y="66.250" width="5.020" height="5.020" fill="black"/>
+<rect x="69.125" y="66.250" width="5.020" height="5.020" fill="black"/>
+<rect x="34.125" y="71.250" width="5.020" height="5.020" fill="black"/>
+<rect x="39.125" y="71.250" width="5.020" height="5.020" fill="black"/>
+<rect x="44.125" y="71.250" width="5.020" height="5.020" fill="black"/>
+<rect x="49.125" y="71.250" width="5.020" height="5.020" fill="black"/>
+<rect x="64.125" y="71.250" width="5.020" height="5.020" fill="black"/>
+<rect x="69.125" y="71.250" width="5.020" height="5.020" fill="black"/>
+<rect x="34.125" y="76.250" width="5.020" height="5.020" fill="black"/>
+<rect x="39.125" y="76.250" width="5.020" height="5.020" fill="black"/>
+<rect x="44.125" y="76.250" width="5.020" height="5.020" fill="black"/>
+<rect x="69.125" y="76.250" width="5.020" height="5.020" fill="black"/>
+<rect x="34.125" y="81.250" width="5.020" height="5.020" fill="black"/>
+<rect x="54.125" y="81.250" width="5.020" height="5.020" fill="black"/>
+<rect x="64.125" y="81.250" width="5.020" height="5.020" fill="black"/>
+<rect x="69.125" y="81.250" width="5.020" height="5.020" fill="black"/>
+<rect x="34.125" y="86.250" width="5.020" height="5.020" fill="black"/>
+<rect x="39.125" y="86.250" width="5.020" height="5.020" fill="black"/>
+<rect x="54.125" y="86.250" width="5.020" height="5.020" fill="black"/>
+<rect x="69.125" y="86.250" width="5.020" height="5.020" fill="black"/>
+<rect x="34.125" y="91.250" width="5.020" height="5.020" fill="black"/>
+<rect x="39.125" y="91.250" width="5.020" height="5.020" fill="black"/>
+<rect x="44.125" y="91.250" width="5.020" height="5.020" fill="black"/>
+<rect x="49.125" y="91.250" width="5.020" height="5.020" fill="black"/>
+<rect x="54.125" y="91.250" width="5.020" height="5.020" fill="black"/>
+<rect x="59.125" y="91.250" width="5.020" height="5.020" fill="black"/>
+<rect x="64.125" y="91.250" width="5.020" height="5.020" fill="black"/>
+<rect x="69.125" y="91.250" width="5.020" height="5.020" fill="black"/>
+<path d="M 50.12 47.25 L 54.12 41.25 L 58.12 47.25 Z" fill="#444"/>
+<text x="54.12" y="39.25" font-size="4" text-anchor="middle" font-family="Helvetica, Arial">FRONT of Cozmo</text>
+<text x="54.12" y="107.25" font-size="4" text-anchor="middle" font-family="Helvetica, Arial">Tag 1  ·  Cozmo  ·  4 cm black square</text>
+<rect x="108.25" y="45.00" width="62.50" height="62.50" fill="white" stroke="#999" stroke-width="0.3" stroke-dasharray="2,1.5"/>
+<rect x="114.500" y="51.250" width="6.270" height="6.270" fill="black"/>
+<rect x="120.750" y="51.250" width="6.270" height="6.270" fill="black"/>
+<rect x="127.000" y="51.250" width="6.270" height="6.270" fill="black"/>
+<rect x="133.250" y="51.250" width="6.270" height="6.270" fill="black"/>
+<rect x="139.500" y="51.250" width="6.270" height="6.270" fill="black"/>
+<rect x="145.750" y="51.250" width="6.270" height="6.270" fill="black"/>
+<rect x="152.000" y="51.250" width="6.270" height="6.270" fill="black"/>
+<rect x="158.250" y="51.250" width="6.270" height="6.270" fill="black"/>
+<rect x="114.500" y="57.500" width="6.270" height="6.270" fill="black"/>
+<rect x="120.750" y="57.500" width="6.270" height="6.270" fill="black"/>
+<rect x="145.750" y="57.500" width="6.270" height="6.270" fill="black"/>
+<rect x="152.000" y="57.500" width="6.270" height="6.270" fill="black"/>
+<rect x="158.250" y="57.500" width="6.270" height="6.270" fill="black"/>
+<rect x="114.500" y="63.750" width="6.270" height="6.270" fill="black"/>
+<rect x="120.750" y="63.750" width="6.270" height="6.270" fill="black"/>
+<rect x="127.000" y="63.750" width="6.270" height="6.270" fill="black"/>
+<rect x="139.500" y="63.750" width="6.270" height="6.270" fill="black"/>
+<rect x="145.750" y="63.750" width="6.270" height="6.270" fill="black"/>
+<rect x="152.000" y="63.750" width="6.270" height="6.270" fill="black"/>
+<rect x="158.250" y="63.750" width="6.270" height="6.270" fill="black"/>
+<rect x="114.500" y="70.000" width="6.270" height="6.270" fill="black"/>
+<rect x="127.000" y="70.000" width="6.270" height="6.270" fill="black"/>
+<rect x="133.250" y="70.000" width="6.270" height="6.270" fill="black"/>
+<rect x="145.750" y="70.000" width="6.270" height="6.270" fill="black"/>
+<rect x="152.000" y="70.000" width="6.270" height="6.270" fill="black"/>
+<rect x="158.250" y="70.000" width="6.270" height="6.270" fill="black"/>
+<rect x="114.500" y="76.250" width="6.270" height="6.270" fill="black"/>
+<rect x="120.750" y="76.250" width="6.270" height="6.270" fill="black"/>
+<rect x="127.000" y="76.250" width="6.270" height="6.270" fill="black"/>
+<rect x="133.250" y="76.250" width="6.270" height="6.270" fill="black"/>
+<rect x="139.500" y="76.250" width="6.270" height="6.270" fill="black"/>
+<rect x="145.750" y="76.250" width="6.270" height="6.270" fill="black"/>
+<rect x="158.250" y="76.250" width="6.270" height="6.270" fill="black"/>
+<rect x="114.500" y="82.500" width="6.270" height="6.270" fill="black"/>
+<rect x="120.750" y="82.500" width="6.270" height="6.270" fill="black"/>
+<rect x="133.250" y="82.500" width="6.270" height="6.270" fill="black"/>
+<rect x="139.500" y="82.500" width="6.270" height="6.270" fill="black"/>
+<rect x="152.000" y="82.500" width="6.270" height="6.270" fill="black"/>
+<rect x="158.250" y="82.500" width="6.270" height="6.270" fill="black"/>
+<rect x="114.500" y="88.750" width="6.270" height="6.270" fill="black"/>
+<rect x="139.500" y="88.750" width="6.270" height="6.270" fill="black"/>
+<rect x="158.250" y="88.750" width="6.270" height="6.270" fill="black"/>
+<rect x="114.500" y="95.000" width="6.270" height="6.270" fill="black"/>
+<rect x="120.750" y="95.000" width="6.270" height="6.270" fill="black"/>
+<rect x="127.000" y="95.000" width="6.270" height="6.270" fill="black"/>
+<rect x="133.250" y="95.000" width="6.270" height="6.270" fill="black"/>
+<rect x="139.500" y="95.000" width="6.270" height="6.270" fill="black"/>
+<rect x="145.750" y="95.000" width="6.270" height="6.270" fill="black"/>
+<rect x="152.000" y="95.000" width="6.270" height="6.270" fill="black"/>
+<rect x="158.250" y="95.000" width="6.270" height="6.270" fill="black"/>
+<path d="M 135.50 41.00 L 139.50 35.00 L 143.50 41.00 Z" fill="#444"/>
+<text x="139.50" y="33.00" font-size="4" text-anchor="middle" font-family="Helvetica, Arial">FRONT of MiP</text>
+<text x="139.50" y="113.50" font-size="4" text-anchor="middle" font-family="Helvetica, Arial">Tag 2  ·  MiP  ·  5 cm black square</text>
+</svg>

@@ -1,0 +1,329 @@
+<h1>Run it yourself</h1>
+<p class="lead">How to set up the Keepy Up software on your own laptop: the ceiling camera, the taped arena, the robot markers, the balloon and the robots. One arena and one tracker run both games: keepy uppy and <a href="/soccer/">floor soccer</a>. The <a href="/guide/">build guide</a> covers what to buy.</p>
+
+<section class="wip" aria-labelledby="progress">
+<h2 id="progress" class="wip-title">Progress</h2>
+<p class="small">Last updated 13 November 2026</p>
+<p class="news"><strong>Big news:</strong> on 13 November, Cozmo and MiP played a whole game of <a href="/soccer/">floor soccer</a> together for the first time, about five and a half minutes with goals both ways. Each robot also plays on its own.</p>
+<h3>Done</h3>
+<ul class="done">
+<li>Arena taped for both games and checked on camera. The tracker's floor map fits the tape within about 5 cm.</li>
+<li>Balloon tracking from the ceiling camera, including its height.</li>
+<li>Robot tracking with coloured tape on top: Cozmo found in 98% of camera frames and MiP in 100%.</li>
+<li>Floor soccer with the real robots: Cozmo alone, MiP alone, and both together.</li>
+<li>A game screen, opened from a button on the Mac's desktop, with a live score and what each robot is doing.</li>
+<li>Voice commands: say "start" and "stop". The microphone listens offline for those two words only, and nothing is recorded.</li>
+<li>A start sequence before every game, game sound effects, and Cozmo's personality: his eyes, faces and arm lifts.</li>
+<li>Reliability: MiP's Bluetooth reconnects by itself if it drops, and the game sends Cozmo less Wi-Fi traffic.</li>
+</ul>
+<h3>Coming next</h3>
+<ol>
+<li>A live soccer game with the newest changes.</li>
+<li>Checking MiP's sounds by ear.</li>
+<li>Keepy uppy with the real robots.</li>
+<li>Full games with people playing.</li>
+</ol>
+<h3>Safety</h3>
+<p>People and children aren't tracked, so the robots don't slow down near them. A grown-up always watches, and speeds stay low.</p>
+</section>
+
+<p class="download"><a class="dlbtn" href="/keepy-up-code.zip" download>&darr; Download the code (zip)</a></p>
+<p class="small">The zip contains the tracker, both games, the soccer game screen, the tape guide, the robot tests and the voice demo. No sound files are included: the games run silently without them, and step 9 explains how to add your own.</p>
+
+<nav class="toc" aria-label="Steps on this page">
+<p class="toc-title">Steps</p>
+<ol>
+<li><a href="#need">What you need</a></li>
+<li><a href="#install">Install the software</a></li>
+<li><a href="#camera">Put up the camera</a></li>
+<li><a href="#arena">Tape the arena</a></li>
+<li><a href="#floor">Teach the tracker the floor</a></li>
+<li><a href="#markers">Mark the robots</a></li>
+<li><a href="#sizes">Check the robot sizes</a></li>
+<li><a href="#balloon">Teach it the balloon</a></li>
+<li><a href="#robots">Test the robots on their own</a></li>
+<li><a href="#keepy">Play keepy uppy</a></li>
+<li><a href="#soccer">Play floor soccer</a></li>
+<li><a href="#safety">Safety and known limits</a></li>
+<li><a href="#message">For programmers: the position stream</a></li>
+</ol>
+</nav>
+
+<h2 id="need">1. What you need</h2>
+<ul>
+<li>A Mac laptop with Python 3 (the code was built with Python 3.9). Other computers should work, but the steps here are for a Mac.</li>
+<li>A USB webcam on the ceiling. Ours is the EMEET SmartCam C960 (1080p).</li>
+<li>Cozmo, and a MiP with Bluetooth.</li>
+<li>A yellow balloon. Ours is about 13 in (33 cm) wide.</li>
+<li>Floor tape in three colours: purple, pink and blue.</li>
+<li>Small pieces of coloured tape for the robots: green, pink and blue.</li>
+<li>A tape measure.</li>
+</ul>
+<p>The <a href="/guide/">build guide</a> has the full shopping list, with why each item is needed.</p>
+
+<h2 id="install">2. Install the software</h2>
+<p>Unzip the download, open <strong>Terminal</strong>, and run these one at a time. They assume the folder is in Downloads.</p>
+<pre><code>cd ~/Downloads/keepy-up-code
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r tracker/requirements.txt
+pip install vosk sounddevice pillow certifi
+python3 -m pycozmo.resources download</code></pre>
+<p>The last line downloads Cozmo's animation files, once. The voice demo downloads a small English voice model (about 40 MB) the first time it runs, and after that works offline.</p>
+<p><strong>Every time you open a new Terminal window</strong>, start with:</p>
+<pre><code>cd ~/Downloads/keepy-up-code
+source .venv/bin/activate</code></pre>
+<p>When macOS asks to let Terminal use the camera, microphone or Bluetooth, choose Allow.</p>
+
+<h2 id="camera">3. Put up the camera</h2>
+<p>Fix the webcam to the ceiling, pointing straight down. In our room:</p>
+<ul>
+<li>the ceiling is <strong>6'-10¼"</strong> (2.09 m) high</li>
+<li>the camera lens is <strong>6'-6"</strong> (1.98 m) above the floor</li>
+<li>the lens sees about <strong>82°</strong> across, which covers the whole 10 × 5⅓ ft arena</li>
+</ul>
+<p>Measure from the floor to the lens with a tape measure and write it down: you need it in steps 4 and 5. The top of the camera picture is called the <strong>back</strong> of the arena, and the bottom the <strong>front</strong>.</p>
+<p><strong>Which camera number?</strong> The commands below use <code>--source 0</code>, which is our EMEET. If a command shows the wrong camera (for example, the laptop's own), try <code>--source 1</code>.</p>
+<details>
+<summary>Can't use the ceiling? A corner clamp also works</summary>
+<p>Clamp the webcam high in a corner and tilt it down, as in Part 1 of the <a href="/guide/">build guide</a>. The tracker works out the camera's height and angle itself, so leave out <code>--camera-height</code> in step 5. The steps on this page were tested with the ceiling camera.</p>
+</details>
+
+<h2 id="arena">4. Tape the arena</h2>
+<p>Both games share one arena. Ours is <strong>10'-0" wide by 5'-4" deep</strong> (3.05 × 1.63 m), measured along the middle of the purple tape.</p>
+<figure class="svgfig wide">
+<div class="hscroll"><svg viewBox="0 0 720 470" role="img" aria-labelledby="arenaT arenaD">
+<title id="arenaT">The taped arena, seen from above</title>
+<desc id="arenaD">A purple rectangle 10 feet wide and 5 feet 4 inches deep, with purple crosses at the corners numbered 1 back-left, 2 back-right, 3 front-right and 4 front-left. A pink centre line splits it into left and right halves. Pink goals 72 cm wide sit in the middle of each short end. Blue 42 cm squares in the two back corners are Cozmo's and MiP's keepy uppy rest squares. Two pink 30 cm squares just inside the right-hand goal, by its top and bottom posts, are where Cozmo and MiP wait in floor soccer.</desc>
+<text x="360" y="30" class="lbl muted" text-anchor="middle">Back (top of the camera picture)</text>
+<rect x="60" y="50" width="600" height="320" class="t-purple"/>
+<line x1="360" y1="50" x2="360" y2="370" class="t-pink"/>
+<line x1="60" y1="139" x2="60" y2="281" class="t-goal"/>
+<line x1="660" y1="139" x2="660" y2="281" class="t-goal"/>
+<path d="M48 139 h24 M48 281 h24 M648 139 h24 M648 281 h24" class="t-post"/>
+<rect x="72" y="62" width="83" height="83" class="sq-blue"/>
+<rect x="565" y="62" width="83" height="83" class="sq-blue"/>
+<text x="113" y="98" class="sm" text-anchor="middle">Cozmo</text><text x="113" y="114" class="sm muted" text-anchor="middle">rest</text>
+<text x="607" y="98" class="sm" text-anchor="middle">MiP</text><text x="607" y="114" class="sm muted" text-anchor="middle">rest</text>
+<rect x="589" y="139" width="59" height="59" class="sq-pink"/>
+<rect x="589" y="222" width="59" height="59" class="sq-pink"/>
+<text x="618" y="173" class="sm" text-anchor="middle">Cozmo</text>
+<text x="618" y="256" class="sm" text-anchor="middle">MiP</text>
+<g class="xmark"><path d="M50 40 l20 20 M70 40 l-20 20"/><path d="M650 40 l20 20 M670 40 l-20 20"/><path d="M650 360 l20 20 M670 360 l-20 20"/><path d="M50 360 l20 20 M70 360 l-20 20"/></g>
+<text x="42" y="56" class="num" text-anchor="end">1</text>
+<text x="678" y="56" class="num">2</text>
+<text x="678" y="386" class="num">3</text>
+<text x="42" y="386" class="num" text-anchor="end">4</text>
+<text x="210" y="215" class="lbl muted" text-anchor="middle">left half</text>
+<text x="490" y="215" class="lbl muted" text-anchor="middle">right half</text>
+<text x="80" y="205" class="sm muted">goal</text><text x="80" y="221" class="sm muted">72 cm</text>
+<text x="360" y="402" class="lbl muted" text-anchor="middle">Front</text>
+<line x1="60" y1="420" x2="660" y2="420" class="dim"/><text x="360" y="442" class="lbl" text-anchor="middle">10'-0" (3.05 m): cross 1 to cross 2</text>
+<line x1="24" y1="70" x2="24" y2="350" class="dim"/><text x="14" y="210" class="lbl" text-anchor="middle" transform="rotate(-90 14 210)">5'-4" (1.63 m)</text>
+<g class="legend"><rect x="120" y="452" width="14" height="14" class="lg-purple"/><text x="140" y="464" class="sm">purple: both games</text>
+<rect x="300" y="452" width="14" height="14" class="lg-pink"/><text x="320" y="464" class="sm">pink: floor soccer</text>
+<rect x="470" y="452" width="14" height="14" class="lg-blue"/><text x="490" y="464" class="sm">blue: keepy uppy</text></g>
+</svg></div>
+<figcaption>Seen from above, as the ceiling camera sees it, drawn to scale. The robots defend the right-hand goal in floor soccer.</figcaption>
+</figure>
+<div class="table-wrap"><table>
+<thead><tr><th>Tape</th><th>What it marks</th><th>Game</th></tr></thead>
+<tbody>
+<tr><td><span class="sw sw-purple"></span>Purple</td><td>The border, and a cross at each corner. Cross 1 is back-left, 2 back-right, 3 front-right and 4 front-left.</td><td>Both</td></tr>
+<tr><td><span class="sw sw-pink"></span>Pink</td><td>The centre line. In keepy uppy it splits Cozmo's half (left) from MiP's (right); in soccer it's the line nobody crosses.</td><td>Both</td></tr>
+<tr><td><span class="sw sw-pink"></span>Pink</td><td>A goal 72 cm wide in the middle of each short end: a post at each side and the goal line between them.</td><td>Floor soccer</td></tr>
+<tr><td><span class="sw sw-pink"></span>Pink</td><td>Two 30 cm squares just inside the robots' goal, where the robots wait: Cozmo by the top (back) post, MiP by the bottom (front) post.</td><td>Floor soccer</td></tr>
+<tr><td><span class="sw sw-blue"></span>Blue</td><td>A 42 cm rest square in each back corner, 6 cm in from the border: Cozmo's on the left, MiP's on the right.</td><td>Keepy uppy</td></tr>
+</tbody></table></div>
+<h3>Let the camera show you where to tape</h3>
+<p><code>tape_guide.py</code> draws the tape marks on the live camera picture, so you can tape exactly where they appear. Run it from the <code>tracker</code> folder, with your own lens height:</p>
+<pre><code>cd tracker
+python tape_guide.py --source 0 --camera-height 1.98                 # keepy uppy marks
+python tape_guide.py --source 0 --camera-height 1.98 --game soccer   # floor soccer marks</code></pre>
+<p>While it's running, <kbd>+</kbd> and <kbd>-</kbd> make the arena wider or narrower, <kbd>]</kbd> and <kbd>[</kbd> make it deeper or shallower, <kbd>G</kbd> switches games, and <kbd>Q</kbd> quits. When you quit, it prints where each mark goes, measured from cross 1. The sizes on screen are approximate, so <strong>measure the real distances</strong> once the tape is down.</p>
+
+<h2 id="floor">5. Teach the tracker the floor</h2>
+<p>This tells the tracker where the floor is, in metres. Redo it whenever the camera moves. From the <code>tracker</code> folder, give your measured arena size and lens height:</p>
+<pre><code>python floor_setup.py --source 0 --width 3.05 --depth 1.63 --camera-height 1.98</code></pre>
+<p>A window shows the camera picture. <strong>Click the 4 purple crosses in order:</strong> 1 back-left, 2 back-right, 3 front-right, 4 front-left. Press <kbd>U</kbd> to undo a click, <kbd>S</kbd> to save, or <kbd>Q</kbd> to quit.</p>
+<figure class="svgfig wide">
+<div class="hscroll"><svg viewBox="0 0 640 250" role="img" aria-labelledby="clickT clickD">
+<title id="clickT">Click order for the crosses</title>
+<desc id="clickD">In the camera picture, click cross 1 at the top left, then 2 at the top right, 3 at the bottom right and 4 at the bottom left, going round clockwise.</desc>
+<rect x="120" y="30" width="400" height="190" rx="4" class="area"/>
+<path d="M150 40 H490 M510 50 V200 M490 210 H150 M130 200 V50" class="flow"/>
+<path d="M482 34 l10 6 l-10 6 M504 192 l6 10 l6 -10 M158 204 l-10 6 l10 6 M124 58 l6 -10 l6 10" class="flow"/>
+<g class="xmark"><path d="M110 20 l20 20 M130 20 l-20 20"/><path d="M510 20 l20 20 M530 20 l-20 20"/><path d="M510 210 l20 20 M530 210 l-20 20"/><path d="M110 210 l20 20 M130 210 l-20 20"/></g>
+<text x="100" y="37" class="num" text-anchor="end">1</text><text x="540" y="37" class="num">2</text><text x="540" y="227" class="num">3</text><text x="100" y="227" class="num" text-anchor="end">4</text>
+<text x="320" y="125" class="lbl muted" text-anchor="middle">camera picture</text>
+<text x="320" y="246" class="sm muted" text-anchor="middle">1 back-left → 2 back-right → 3 front-right → 4 front-left</text>
+</svg></div>
+</figure>
+<p>After saving, check two things:</p>
+<ul>
+<li>It prints how high it thinks the camera is. That should match your tape measure.</li>
+<li>Open <code>floor_check.jpg</code> in the tracker folder. Its 50 cm grid should sit on your tape, and a thick line marks the middle. Ours fits the tape within about 5 cm at the worst corner, well inside the robots' 20 cm safety margin from the border.</li>
+</ul>
+<p>If either looks wrong, check the click order and try again.</p>
+<details>
+<summary>Optional: straighten the lens first (more accurate)</summary>
+<p>Do this once per camera, before the floor step. Print a checkerboard with 9 × 6 inner corners and 25 mm squares, then run:</p>
+<pre><code>python floor_setup.py --source 0 --lens</code></pre>
+<p>Hold the checkerboard in front of the camera. Press <kbd>Space</kbd> each time the corners are drawn in colour, about 15 times, at different angles and distances, and include the edges of the picture. Then press <kbd>C</kbd> to calculate.</p>
+</details>
+
+<h2 id="markers">6. Mark the robots</h2>
+<p>From the ceiling, the camera tells the robots apart by <strong>coloured tape on top</strong>:</p>
+<ul>
+<li>a <strong>green patch</strong> (3–4 cm) on top of each robot</li>
+<li>a smaller <strong>front piece</strong>, about 3 cm, on the side the robot faces: <strong>pink for Cozmo</strong>, <strong>blue for MiP</strong></li>
+</ul>
+<p>The front piece tells the tracker which robot it is and which way it's facing. Don't use yellow or orange on the robots, because they look too much like the balloon. Use tape that peels off cleanly and keep it off the wheels, lift and sensors.</p>
+<div class="tagfigs">
+<figure class="svgfig">
+<svg viewBox="0 0 300 200" role="img" aria-labelledby="cm1 cm2">
+<title id="cm1">Cozmo's markers, from above</title>
+<desc id="cm2">Seen from above. A green patch sits on Cozmo's back and a pink piece at the front, by its face, so the pink piece shows which way Cozmo faces.</desc>
+<rect x="56" y="48" width="160" height="22" rx="10" class="trk"/>
+<rect x="56" y="140" width="160" height="22" rx="10" class="trk"/>
+<rect x="64" y="66" width="146" height="78" rx="10" class="robot"/>
+<rect x="160" y="74" width="52" height="62" rx="8" class="robot"/>
+<rect x="208" y="80" width="8" height="50" rx="3" class="face"/>
+<path d="M200 70 H246 M200 140 H246" class="lift"/><path d="M246 66 v78" class="lift"/>
+<rect x="84" y="82" width="46" height="46" rx="3" class="mk-green"/>
+<rect x="176" y="92" width="26" height="26" rx="3" class="mk-pink"/>
+<text x="256" y="110" class="lbl">face</text>
+<text x="150" y="186" class="lbl" text-anchor="middle">Cozmo: green + pink</text>
+</svg>
+</figure>
+<figure class="svgfig">
+<svg viewBox="0 0 300 200" role="img" aria-labelledby="mm1 mm2">
+<title id="mm1">MiP's markers, from above</title>
+<desc id="mm2">Seen from above. A green patch sits on top of MiP's head and a blue piece toward its face, so the blue piece shows which way MiP faces.</desc>
+<rect x="128" y="30" width="44" height="18" rx="6" class="wheel"/>
+<rect x="128" y="144" width="44" height="18" rx="6" class="wheel"/>
+<circle cx="150" cy="96" r="50" class="robot"/>
+<path d="M190 68 A50 50 0 0 1 190 124" class="visor"/>
+<rect x="114" y="74" width="44" height="44" rx="3" class="mk-green"/>
+<rect x="164" y="83" width="26" height="26" rx="3" class="mk-blue"/>
+<text x="210" y="101" class="lbl">face</text>
+<text x="150" y="186" class="lbl" text-anchor="middle">MiP: green + blue</text>
+</svg>
+</figure>
+</div>
+<p>With this tape, the tracker found Cozmo in 98% of camera frames and MiP in 100%. Green things outside the arena are ignored.</p>
+<p><strong>When the balloon is right over a robot</strong>, the camera can't see that robot. The tracker keeps its last position for up to 2 seconds, and the robot holds still until it's seen again. This is on purpose, for safety.</p>
+<details>
+<summary>Why not printed AprilTags?</summary>
+<p>We first tried printed AprilTags (4 cm on Cozmo, 5 cm on MiP). From a 6½ ft ceiling they were too small: the camera read them in only 1–14% of frames. The tracker still reads a tag if it can see one, which may help with a camera closer to the floor, or with bigger tags.</p>
+<p class="download"><a class="dlbtn" href="/guide/tags.pdf" download="keepy-up-robot-tags.pdf">&darr; Download the robot tags (PDF, 1 page)</a></p>
+<p>Print at 100% ("Actual size") and check the line at the top measures 10 cm. Lay each tag flat on top of its robot, facing up, with the printed arrow pointing toward the robot's face. <code>python tag_view.py --source 0</code> shows which tags the camera can read.</p>
+</details>
+
+<h2 id="sizes">7. Check the robot sizes</h2>
+<p>The tracker knows roughly how big each robot is. It uses this to report the robot's middle, to draw a box around each robot in the preview, to keep the robots inside the arena, and to ignore the robots when it looks for the balloon.</p>
+<p>The sizes are estimates. Measure your robots with a ruler and change them in <code>tracker/room.json</code> (made by step 5), under <code>"robots"</code>, in metres:</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Setting</th><th>Cozmo</th><th>MiP</th><th>What it is</th></tr></thead>
+<tbody>
+<tr><td><code>length</code></td><td>0.10</td><td>0.09</td><td>Front to back (Cozmo: include the lift arms)</td></tr>
+<tr><td><code>width</code></td><td>0.06</td><td>0.11</td><td>Side to side (MiP: wheel to wheel)</td></tr>
+<tr><td><code>height</code></td><td>0.075</td><td>0.20</td><td>Floor to the top</td></tr>
+<tr><td><code>tag_height</code></td><td>0.07</td><td>0.20</td><td>Floor to the marker on top</td></tr>
+<tr><td><code>tag_forward</code></td><td>-0.02</td><td>0.0</td><td>How far the marker is in front of the robot's middle (negative means behind)</td></tr>
+</tbody></table></div>
+<p>If the box in the preview is bigger or smaller than the robot, or off to one side, adjust these numbers.</p>
+
+<h2 id="balloon">8. Teach it the balloon</h2>
+<p>The tracker finds the balloon by its colour, and it starts set for yellow. Move anything else yellow out of the camera's view first. A yellow tennis ball by the arena fooled ours.</p>
+<ol>
+<li>Run the tracker with colour sliders:
+<pre><code>python tracker.py --source 0 --tune</code></pre></li>
+<li>Hold the balloon in view. Drag the sliders until only the balloon shows white, then press <kbd>S</kbd> to save.</li>
+<li>Rest the balloon on the floor in view and press <kbd>F</kbd>. This measures its width, which the tracker uses to work out how high the balloon is.</li>
+</ol>
+<p><strong>Check:</strong> ours measured 32.7 cm (about 13 in) wide. Resting on the floor, the tracker should then read its height as about half its width (16 cm for ours), because the height is measured to the balloon's centre.</p>
+<p>Other keys: <kbd>T</kbd> shows or hides the sliders, and <kbd>Q</kbd> quits. Pictures are processed in memory and never saved.</p>
+
+<h2 id="robots">9. Test the robots on their own</h2>
+<p>Do these before the games, from the main <code>keepy-up-code</code> folder (<code>cd ..</code> if you're in <code>tracker</code>). None of these use the camera, so the robots can't see: give each robot about 2 × 2 m of clear floor and keep children out of the way.</p>
+<h3>Connect the robots</h3>
+<ul>
+<li><strong>MiP</strong> uses Bluetooth. Stand it up and let it balance first. MiP has no edge sensor, so only ever run it on the floor.</li>
+<li><strong>Cozmo</strong> makes its own Wi-Fi network. Put him on his charger to wake him, then join his network from the laptop's Wi-Fi menu: his face shows the network name and password. Both robots can be connected at once.</li>
+</ul>
+<p><strong>If Cozmo connects but won't move</strong> (no face, no wheels), his software may have fallen back to a recovery mode. Connect him once with the official Cozmo app on a phone or tablet, which updates his software, then try again. That fixed ours.</p>
+<h3>Sounds</h3>
+<p>The download has no sound files, because they come from other companies' apps. Everything still works without them, just silently.</p>
+<ul>
+<li><strong>Cozmo's voice:</strong> PyCozmo plays Cozmo's animations without sound, so the games play Cozmo's own voice clips alongside. If you have the Cozmo app on a Mac, <code>sounds/cozmo/README.txt</code> explains where they are and how to convert them.</li>
+<li><strong>Game sound effects</strong> (soccer): add your own short, quiet <code>.wav</code> files to the <code>sounds</code> folder. <code>sounds/README.txt</code> lists the names the game looks for.</li>
+<li><strong>MiP's sounds</strong> are built into MiP, so nothing to add.</li>
+</ul>
+<h3>The tests, in order</h3>
+<pre><code>python3 mip_test.py                   # MiP: light, small turns, short roll, battery
+python3 voice_start.py --no-robots    # voice only: "Let's play", "Stop", "All done"
+python3 voice_start.py --no-cozmo     # voice + MiP
+python3 voice_start.py                # voice + both robots
+python3 robot_tests.py clap           # clap once to roll, say "stop" to freeze
+python3 robot_tests.py start          # say "start" or "let's play" to roll
+python3 robot_tests.py stop           # say "start", wait, then "stop"</code></pre>
+<p>In the voice and robot tests, the <kbd>Space</kbd> bar pauses, like the big pause button, and <kbd>Q</kbd> quits. Add <code>--no-cozmo</code>, <code>--no-mip</code> or <code>--no-robots</code> to leave a robot out.</p>
+
+<h2 id="keepy">10. Play keepy uppy</h2>
+<h3>How it plays</h3>
+<ul>
+<li>The children keep the balloon up in the air. The robots don't hit it: they follow it on the floor.</li>
+<li>The pink centre line splits the arena. <strong>Cozmo looks after the left half, MiP the right.</strong></li>
+<li>The robot whose half the balloon is over drives to the spot on the floor under it. The other robot waits where it is.</li>
+<li>The blue squares in the back corners are the robots' rest squares. The robots don't drive to them by themselves yet.</li>
+</ul>
+<h3>Run it</h3>
+<p>You need two Terminal windows, both in the <code>tracker</code> folder with the environment switched on (step 2).</p>
+<p><strong>Terminal 1</strong> runs the tracker:</p>
+<pre><code>python tracker.py --source 0</code></pre>
+<p><strong>Terminal 2</strong> runs the robots. Start with a dry run, where nothing moves and it prints where the robots would go:</p>
+<pre><code>python chase.py --dry-run</code></pre>
+<p>Then with one robot at a time, then both:</p>
+<pre><code>python chase.py --only cozmo
+python chase.py --only mip
+python chase.py</code></pre>
+<p>The top speed is 0.10 m/s; change it with <code>--max-speed</code>. <strong>Press <kbd>Ctrl</kbd>+<kbd>C</kbd> in Terminal 2 to stop the robots.</strong></p>
+
+<h2 id="soccer">11. Play floor soccer</h2>
+<p>Two people play Cozmo and MiP, air-hockey style, on the same arena. A friendly game screen starts everything: the camera, the scoreboard and the robots. The rules, how the robots play and how to start it are on the <a href="/soccer/">Floor soccer</a> page.</p>
+
+<h2 id="safety">12. Safety and known limits</h2>
+<p>Every robot stops at once if:</p>
+<ul>
+<li>the camera hasn't seen it, or the balloon, for half a second</li>
+<li>it's hidden from the camera under the balloon (it waits there)</li>
+<li>no message has come from the tracker for half a second</li>
+<li>you press <kbd>Ctrl</kbd>+<kbd>C</kbd></li>
+</ul>
+<p>The robots always stay inside the arena: a robot found outside it drives straight back in before doing anything else.</p>
+<p>Known limits right now:</p>
+<ul>
+<li><strong>People and children aren't tracked</strong>, so the robots don't slow down or stop near them. A grown-up always watches, and speeds stay low.</li>
+<li>Keepy uppy hasn't been played with the real robots yet, and it doesn't have the game screen, voice commands or sounds that floor soccer has.</li>
+<li>In keepy uppy, the robots don't drive to their blue rest squares by themselves yet.</li>
+<li>In soccer, MiP gets weak when its battery is low: the game screen warns below 25%, so charge it before playing.</li>
+</ul>
+
+<h2 id="message">13. For programmers: the position stream</h2>
+<p><code>tracker.py</code> streams positions on <code>ws://localhost:8765</code>, about 15 times a second, so you can build your own game on top:</p>
+<pre><code>{"type": "positions", "t": 1730412345.12,
+ "room": {"width": 3.05, "depth": 1.63, "clockwise": true, "balloon_size": 0.327},
+ "robots": {"cozmo": {"id": 1, "x": 0.8, "y": 1.2, "heading": 90.0,
+                      "length": 0.10, "width": 0.06, "height": 0.075, "seen": true, "age": 0.03},
+            "mip":   {"id": 2, "x": 2.1, "y": 0.9, "heading": 270.0,
+                      "length": 0.09, "width": 0.11, "height": 0.20, "seen": true, "age": 0.03}},
+ "balloon": {"x": 1.4, "y": 0.6, "height": 1.1, "seen": true, "age": 0.03}}</code></pre>
+<ul>
+<li>Positions are in metres from cross 1 (back-left). <code>x</code> runs toward cross 2, and <code>y</code> toward cross 4 (the front).</li>
+<li>A robot's <code>x</code> and <code>y</code> are its middle. <code>length</code>, <code>width</code> and <code>height</code> are its size.</li>
+<li><code>heading</code> 0 means facing cross 2, and 90 means facing the front. With this cross order, heading goes up clockwise seen from above, so <code>"clockwise": true</code>: anything that steers a robot must flip its turn direction.</li>
+<li><code>seen</code> turns false after half a second without a sighting. A robot hidden under the balloon keeps its last spot for up to 2 seconds, with <code>"hidden": true</code>.</li>
+<li>The balloon's <code>height</code> is to its centre, worked out from its width (<code>balloon_size</code>).</li>
+</ul>
+<p>More detail is in <code>tracker/README.md</code> and at the top of each script.</p>

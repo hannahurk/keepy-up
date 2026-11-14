@@ -1,0 +1,25 @@
+# Kept out of the public repository
+
+# Python setup (rebuilt from tracker/requirements.txt) and caches
+.venv/
+__pycache__/
+*.pyc
+
+# Game logs: they list nearby Bluetooth devices (other people's watches, TVs...)
+logs/
+
+# Sound files: from the Angry Birds and Cozmo apps, not ours to share
+sounds/
+
+# Screen recordings and camera pictures: children may appear in them
+*.mov
+*.mp4
+*.jpg
+*.jpeg
+*.png
+
+# The website has its own repository
+vercel-site/
+
+# Mac clutter
+.DS_Store

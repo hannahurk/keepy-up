@@ -1,0 +1,11 @@
+opencv-python
+numpy
+pupil-apriltags
+websockets>=13
+bleak
+pycozmo
+# voice commands ("start" / "stop") in play_soccer.py:
+vosk
+sounddevice
+# optional, only for tracker.py --yolo:
+# ultralytics

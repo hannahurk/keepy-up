@@ -1,0 +1,93 @@
+<h1>Floor soccer</h1>
+<p class="lead">The second game on the Keepy Up arena: <strong>two people against Cozmo and MiP</strong>, played like air hockey. Each team defends its own goal, nobody crosses the centre line, and only the balloon goes from side to side. The camera spots goals and keeps the score.</p>
+
+<section class="wip" aria-labelledby="sstatus">
+<h2 id="sstatus" class="wip-title">Progress</h2>
+<p class="small">Last updated 8 November 2026</p>
+<ul>
+<li><strong>Done:</strong> the rules, the arena tape, the automatic scorekeeper (all 7 checks pass), and the robots' goal guarding, worked out in simulation.</li>
+<li><strong>Next:</strong> a dry run where the robots don't move, then the real robots with the scoreboard, then full games with people.</li>
+<li><strong>Not yet:</strong> sounds, and the robots' reactions to goals. People aren't tracked yet, so keep a grown-up watching and speeds low.</li>
+</ul>
+</section>
+
+<figure class="svgfig wide">
+<div class="hscroll"><svg viewBox="0 0 720 420" role="img" aria-labelledby="pitchT pitchD">
+<title id="pitchT">The floor soccer pitch, seen from above</title>
+<desc id="pitchD">The arena seen from above. The people's side is the left half, with the people's goal on the left end. The robots' side is the right half, split into two lanes: Cozmo's lane at the back (top) and MiP's lane at the front (bottom). The robots' goal is on the right end. Cozmo guards the back half of the goal and MiP the front half. Nobody crosses the pink centre line; only the balloon does.</desc>
+<text x="360" y="28" class="lbl muted" text-anchor="middle">Back (top of the camera picture)</text>
+<rect x="360" y="50" width="300" height="160" class="lane-c"/>
+<rect x="360" y="210" width="300" height="160" class="lane-m"/>
+<rect x="60" y="50" width="600" height="320" class="t-purple"/>
+<line x1="360" y1="50" x2="360" y2="370" class="t-pink"/>
+<line x1="360" y1="210" x2="660" y2="210" class="lane-split"/>
+<line x1="60" y1="139" x2="60" y2="281" class="t-goal"/>
+<line x1="660" y1="139" x2="660" y2="281" class="t-goal"/>
+<path d="M48 139 h24 M48 281 h24 M648 139 h24 M648 281 h24" class="t-post"/>
+<text x="210" y="190" class="lbl" text-anchor="middle">People's side</text>
+<text x="210" y="212" class="sm muted" text-anchor="middle">2 players</text>
+<circle cx="170" cy="250" r="12" class="person"/><circle cx="250" cy="250" r="12" class="person"/>
+<text x="500" y="110" class="lbl" text-anchor="middle">Cozmo's lane</text>
+<text x="500" y="130" class="sm muted" text-anchor="middle">guards the back half of the goal</text>
+<text x="500" y="290" class="lbl" text-anchor="middle">MiP's lane</text>
+<text x="500" y="310" class="sm muted" text-anchor="middle">guards the front half of the goal</text>
+<rect x="589" y="139" width="59" height="59" class="sq-pink"/>
+<rect x="589" y="222" width="59" height="59" class="sq-pink"/>
+<text x="618" y="173" class="sm" text-anchor="middle">Cozmo</text>
+<text x="618" y="256" class="sm" text-anchor="middle">MiP</text>
+<circle cx="330" cy="150" r="22" class="balloon"/>
+<text x="74" y="215" class="sm muted">people's</text><text x="74" y="231" class="sm muted">goal</text>
+<text x="690" y="205" class="sm muted" text-anchor="middle">robots'</text><text x="690" y="221" class="sm muted" text-anchor="middle">goal</text>
+<text x="360" y="396" class="lbl muted" text-anchor="middle">Front</text>
+<text x="360" y="414" class="sm muted" text-anchor="middle">Pink centre line: nobody crosses it. Only the balloon does.</text>
+</svg></div>
+<figcaption>Seen from above. The goals are 72 cm wide, in the middle of each short end. The robots wait in the pink squares before play.</figcaption>
+</figure>
+
+<h2 id="rules">The rules</h2>
+<ol>
+<li><strong>Two teams:</strong> two people against Cozmo and MiP. Each team stays on its own side of the pink centre line. Only the balloon crosses.</li>
+<li><strong>Nobody kicks.</strong> People push the balloon along the floor with their hands, and the robots push it with their bodies. That's why the start of play is called a <strong>serve</strong>, not a kick-off.</li>
+<li><strong>A new game</strong> starts with the people serving toward the robots.</li>
+<li><strong>A goal</strong> counts when the balloon, on the floor, crosses the goal line between the posts. A balloon in the air doesn't count.</li>
+<li><strong>After a goal,</strong> the team that scored serves.</li>
+<li><strong>After "Out!"</strong> (the balloon leaves the arena anywhere else), the team whose side it went out on serves.</li>
+<li><strong>First team to 5 goals wins.</strong></li>
+</ol>
+<p>When it's the robots' serve, a person puts the balloon down on the robots' side. Once the balloon has sat on the floor on the serving side for about a second, the scoreboard says <strong>"Play!"</strong>.</p>
+
+<h2 id="defence">How the robots defend</h2>
+<p>The robots' half is split into two lanes, so the two robots never bump into each other:</p>
+<ul>
+<li><strong>Cozmo</strong> has the back lane and guards the back half of the goal.</li>
+<li><strong>MiP</strong> has the front lane and guards the front half of the goal.</li>
+<li>Each robot slides along just in front of the goal line, staying between the balloon and its half of the goal.</li>
+<li>When the balloon comes into a robot's lane, that robot goes out, gets behind it and pushes it back toward the people's goal.</li>
+<li>Neither robot ever leaves its lane, crosses the centre line or leaves the arena.</li>
+</ul>
+<p>In simulation, guarding robots let in about a third fewer goals than robots standing still, and they always stayed at least 28 cm apart.</p>
+
+<h2 id="goals">Goal width</h2>
+<p>We're keeping the goals at <strong>72 cm</strong>, as taped. In simulation with our real balloon and both robots guarding, 72 cm goals were very hard to score on:</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Goal width</th><th>Goals scored from 150 shots</th></tr></thead>
+<tbody>
+<tr><td>72 cm (as taped)</td><td>0</td></tr>
+<tr><td>85 cm</td><td>23</td></tr>
+<tr><td>1 m</td><td>35</td></tr>
+</tbody></table></div>
+<p>Real people play differently from the simulation, so we'll check in real games. If people can't score, we'll widen the goals: move the pink posts, then change <code>GOAL_WIDTH</code> in <code>tracker/room.py</code> to the new width in metres, so the scoreboard and robots match the tape.</p>
+
+<h2 id="run">Run it</h2>
+<p>First set up the camera, arena, robot markers and balloon: steps 1–9 of <a href="/run/">Run it yourself</a>. Then open three Terminal windows, all in the <code>tracker</code> folder with the environment switched on.</p>
+<p><strong>Terminal 1</strong> runs the tracker:</p>
+<pre><code>python tracker.py --source 0</code></pre>
+<p><strong>Terminal 2</strong> runs the referee and scoreboard. The robots defend the right-hand goal and the people the left:</p>
+<pre><code>python soccer.py</code></pre>
+<p>Scoreboard keys: <kbd>Space</kbd> pauses or resumes, <kbd>R</kbd> starts a new game, <kbd>K</kbd> serves again, and <kbd>Q</kbd> quits. To swap ends, add <code>--robots-defend left</code> here and in Terminal 3.</p>
+<p><strong>Terminal 3</strong> runs the robots. Start with a dry run, where nothing moves and it prints where the robots would go:</p>
+<pre><code>python chase.py --game soccer --dry-run</code></pre>
+<p>Then the real robots, one at a time, then both:</p>
+<pre><code>python chase.py --game soccer --only cozmo
+python chase.py --game soccer</code></pre>
+<p><strong>Press <kbd>Ctrl</kbd>+<kbd>C</kbd> in Terminal 3 to stop the robots.</strong> The same safety stops as keepy uppy apply: see <a href="/run/#safety">Safety and known limits</a>.</p>

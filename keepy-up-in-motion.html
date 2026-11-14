@@ -1,0 +1,239 @@
+<title>Keepy Up in Motion</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Baloo+2:wght@600;700&display=swap">
+<style>
+/* Layout: a single reading column of two live scenes, each with its controls and a plain caption underneath */
+:root {
+  --bg: #F3F5F1;
+  --card: #FFFFFF;
+  --ink: #22312F;
+  --muted: #5A6B68;
+  --line: #D8DED9;
+  --accent: #2F7E78;
+  --accent-ink: #FFFFFF;
+  --display: "Baloo 2", "Trebuchet MS", system-ui, sans-serif;
+  --body: "Atkinson Hyperlegible", Verdana, system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #141B1A; --card: #1C2524; --ink: #E4ECEA; --muted: #9DB0AC; --line: #2D3a38; --accent: #6FC2BA; --accent-ink: #0E1716;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #141B1A; --card: #1C2524; --ink: #E4ECEA; --muted: #9DB0AC; --line: #2D3a38; --accent: #6FC2BA; --accent-ink: #0E1716;
+  color-scheme: dark;
+}
+body {
+  background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 16px; line-height: 1.6;
+}
+.wrap {
+  max-width: 900px; margin: 0 auto; box-sizing: border-box;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 28px 48px;
+  display: grid; gap: 36px;
+}
+h1 { font-family: var(--display); font-weight: 700; font-size: clamp(30px, 5vw, 42px); line-height: 1.1; margin: 0; text-wrap: balance; }
+h2 { font-family: var(--display); font-weight: 600; font-size: 24px; margin: 0; text-wrap: balance; }
+.lead { margin: 8px 0 0; color: var(--muted); max-width: 62ch; }
+section { display: grid; gap: 12px; }
+.stage { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 12px; display: grid; gap: 12px; }
+.stage svg, .stage canvas { width: 100%; height: auto; display: block; border-radius: 10px; }
+.row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.pair { display: grid; grid-template-columns: 1fr 1.3fr; gap: 12px; }
+@media (max-width: 640px) { .pair { grid-template-columns: 1fr; } }
+.label { font-size: 13px; color: var(--muted); margin-bottom: 4px; }
+button {
+  font: inherit; font-size: 15px; min-height: 44px; padding: 8px 16px; border-radius: 10px; cursor: pointer;
+  border: 1px solid var(--muted); background: var(--card); color: var(--ink);
+}
+button:hover { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+button.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+button.primary:hover { box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px var(--accent); }
+button:active { transform: translateY(1px); }
+button:focus-visible, input:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+input[type="checkbox"] { width: 20px; height: 20px; accent-color: var(--accent); }
+label.check { min-height: 44px; cursor: pointer; }
+.caption { font-size: 15px; color: var(--ink); min-height: 1.6em; }
+.status { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 4px 16px; font-size: 14px; color: var(--muted); }
+.status b { color: var(--ink); font-weight: 700; }
+.note { font-size: 14px; color: var(--muted); max-width: 70ch; margin: 0; }
+label.check { font-size: 14px; color: var(--muted); display: flex; align-items: center; gap: 6px; }
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>Keepy Up in Motion</h1>
+    <p class="lead">Two short animations of the finished game: one webcam on a stand, Cozmo and MiP roaming the room, and a projected line on the wall that follows the balloon. Sound plays only for a tap and for a landing.</p>
+    <p class="lead"><b>The robots follow the balloon.</b> Cozmo follows it in the left half of the room and MiP in the right, and when it lands the nearer robot nudges it back toward a child. The robots don't hit the balloon: the children keep it in the air.</p>
+  </header>
+
+  <section aria-labelledby="s1">
+    <h2 id="s1">A game in play</h2>
+    <div class="stage">
+      <svg id="scene" viewBox="0 0 680 440" role="img" aria-label="Animated play room: two children bat a balloon while Cozmo and MiP follow it and a projected line on the back wall traces its path">
+        <polygon points="0,0 680,0 580,20 100,20" fill="#EEF1EF"/>
+        <polygon points="0,0 100,20 100,240 0,440" fill="#D9E2DF"/>
+        <polygon points="680,0 580,20 580,240 680,440" fill="#D9E2DF"/>
+        <rect x="100" y="20" width="480" height="220" fill="#E6ECEA"/>
+        <polygon points="100,240 580,240 680,440 0,440" fill="#D6BF9B"/>
+        <g stroke="#C2A67F" stroke-width="1"><line x1="85" y1="440" x2="160" y2="240"/><line x1="170" y1="440" x2="220" y2="240"/><line x1="255" y1="440" x2="280" y2="240"/><line x1="340" y1="440" x2="340" y2="240"/><line x1="425" y1="440" x2="400" y2="240"/><line x1="510" y1="440" x2="460" y2="240"/><line x1="595" y1="440" x2="520" y2="240"/><line x1="75" y1="290" x2="605" y2="290"/><line x1="45" y1="350" x2="635" y2="350"/></g>
+        <rect x="120" y="32" width="440" height="190" rx="4" fill="#1E3341"/>
+        <g id="trail"></g>
+        <g id="wallDots"></g>
+        <g id="rig"></g>
+        <g id="floorMarks"></g>
+        <g id="shadows"></g>
+        <g id="dyn">
+          <g id="kidA"><ellipse cx="0" cy="0" rx="30" ry="5" fill="#000" fill-opacity="0.12"/><g id="armsA"><line x1="-12" y1="-100" x2="-24" y2="-168" stroke="#E8B48F" stroke-width="9" stroke-linecap="round"/><line x1="12" y1="-100" x2="40" y2="-174" stroke="#E8B48F" stroke-width="9" stroke-linecap="round"/></g><rect x="-12" y="-54" width="10" height="50" rx="4" fill="#3E4A5A"/><rect x="2" y="-54" width="10" height="50" rx="4" fill="#3E4A5A"/><rect x="-19" y="-112" width="38" height="64" rx="11" fill="#6FA3C7"/><circle cx="0" cy="-132" r="18" fill="#E8B48F"/><path d="M-18 -134 A18 18 0 0 1 18 -134 Q8 -145 0 -142 Q-9 -145 -18 -134 Z" fill="#4A3426"/></g>
+          <g id="kidB"><ellipse cx="0" cy="0" rx="30" ry="5" fill="#000" fill-opacity="0.12"/><g id="armsB"><line x1="-12" y1="-100" x2="-40" y2="-172" stroke="#8D5B3E" stroke-width="9" stroke-linecap="round"/><line x1="12" y1="-100" x2="18" y2="-176" stroke="#8D5B3E" stroke-width="9" stroke-linecap="round"/></g><rect x="-12" y="-54" width="10" height="50" rx="4" fill="#5A6B4A"/><rect x="2" y="-54" width="10" height="50" rx="4" fill="#5A6B4A"/><rect x="-19" y="-112" width="38" height="64" rx="11" fill="#F0C35C"/><g fill="#2B1D14"><circle cx="-10" cy="-142" r="8"/><circle cx="0" cy="-147" r="9"/><circle cx="10" cy="-142" r="8"/><circle cx="-14" cy="-133" r="6"/><circle cx="14" cy="-133" r="6"/></g><circle cx="0" cy="-130" r="16" fill="#8D5B3E"/></g>
+          <g id="cozmo"><ellipse cx="0" cy="0" rx="26" ry="3" fill="#000" fill-opacity="0.15"/><line x1="14" y1="-44" x2="14" y2="-229" stroke="#888" stroke-width="3"/><polygon points="14,-229 56,-218 14,-207" fill="#5FC7B2"/><rect x="-22" y="-14" width="44" height="13" rx="6" fill="#F4F4F2" stroke="#2A2A2A" stroke-width="2"/><circle cx="-14" cy="-7.5" r="3.5" fill="#A89A8C"/><circle cx="14" cy="-7.5" r="3.5" fill="#A89A8C"/><rect x="-18" y="-32" width="36" height="20" rx="4" fill="#F4F4F2" stroke="#CCC" stroke-width="1"/><rect x="-16" y="-20" width="32" height="7" rx="2" fill="#A89A8C"/><rect x="-12" y="-44" width="24" height="18" rx="4" fill="#F4F4F2" stroke="#CCC" stroke-width="1"/><ellipse cx="-12" cy="-35" rx="1.6" ry="5" fill="none" stroke="#C0392B" stroke-width="1.6"/><ellipse cx="12" cy="-35" rx="1.6" ry="5" fill="none" stroke="#C0392B" stroke-width="1.6"/><rect x="-9" y="-41" width="18" height="12" rx="3" fill="#1B2A44"/><rect x="-6" y="-38.5" width="4.5" height="6" rx="1.5" fill="#5FE0D0"/><rect x="1.5" y="-38.5" width="4.5" height="6" rx="1.5" fill="#5FE0D0"/><rect x="-8" y="-47" width="16" height="3" fill="#111"/><g id="clift"><path d="M-18 -28L-24 -10M18 -28L24 -10M-24 -10H24" fill="none" stroke="#BBB" stroke-width="4" stroke-linecap="round"/><path d="M-18 -28L-24 -10M18 -28L24 -10M-24 -10H24" fill="none" stroke="#F4F4F2" stroke-width="2.5" stroke-linecap="round"/><rect x="-28" y="-13" width="7" height="5" rx="1.5" fill="#222"/><rect x="21" y="-13" width="7" height="5" rx="1.5" fill="#222"/></g></g>
+          <g id="mip"><ellipse cx="0" cy="0" rx="20" ry="3" fill="#000" fill-opacity="0.15"/><line x1="11" y1="-36" x2="11" y2="-112" stroke="#888" stroke-width="1.5"/><polygon points="11,-112 33,-106 11,-100" fill="#A98BE0"/><ellipse cx="-9" cy="-12" rx="5" ry="12" fill="#222"/><ellipse cx="9" cy="-12" rx="5" ry="12" fill="#222"/><ellipse cx="-9" cy="-12" rx="2" ry="5" fill="#F4F4F2"/><ellipse cx="9" cy="-12" rx="2" ry="5" fill="#F4F4F2"/><line x1="-9" y1="-36" x2="-14" y2="-24" stroke="#222" stroke-width="3" stroke-linecap="round"/><line x1="9" y1="-36" x2="15" y2="-44" stroke="#222" stroke-width="3" stroke-linecap="round"/><ellipse cx="0" cy="-32" rx="10" ry="12" fill="#F4F4F2" stroke="#CCC" stroke-width="1"/><ellipse cx="0" cy="-33" rx="3" ry="4.5" fill="#7FC8E0"/><line x1="-9" y1="-24" x2="9" y2="-24" stroke="#222" stroke-width="1.5"/><ellipse cx="0" cy="-50" rx="10" ry="9" fill="#F4F4F2" stroke="#CCC" stroke-width="1"/><rect x="-9.5" y="-52.5" width="19" height="5" rx="2.5" fill="#222"/><circle cx="-4" cy="-50" r="1.4" fill="#7FD3FF"/><circle cx="4" cy="-50" r="1.4" fill="#7FD3FF"/><rect x="-6" y="-61" width="12" height="3" fill="#111"/></g>
+          <g id="balloon"><circle cx="0" cy="0" r="40" fill="#7FD36A"/><ellipse cx="-14" cy="-16" rx="10" ry="14" fill="#FFF" fill-opacity="0.5"/><path d="M-5 42 L5 42 L0 37 Z" fill="#62B04F"/><path d="M0 42 Q5 52 -2 62" fill="none" stroke="#9AA5A8" stroke-width="1.5"/></g>
+        </g>
+        <g id="projector"><line x1="330" y1="440" x2="322" y2="420" stroke="#55606A" stroke-width="3"/><line x1="350" y1="440" x2="358" y2="420" stroke="#55606A" stroke-width="3"/><rect x="322" y="404" width="36" height="18" rx="4" fill="#3C4448"/><circle cx="340" cy="413" r="5" fill="#8FB6C9"/></g>
+      </svg>
+      <div class="row">
+        <button id="playBtn" class="primary" type="button">Pause</button>
+        <button id="soundBtn" type="button">Sound off</button>
+        <button id="restartBtn" type="button">Restart</button>
+      </div>
+      <div id="caption" class="caption" aria-live="polite">Someone says "Let's play keepy uppy"...</div>
+      <div class="status">
+        <div><b>Balloon:</b> <span id="stBall">–</span></div>
+        <div><b>Cozmo:</b> <span id="stCozmo">–</span></div>
+        <div><b>MiP:</b> <span id="stMip">–</span></div>
+      </div>
+    </div>
+    <p class="note">Robots are drawn about twice their real size so you can see them. Cozmo looks after the left half and MiP the right. Both slow down within 1 m of a child and stop within 40 cm.</p>
+  </section>
+
+  <section aria-labelledby="s2">
+    <h2 id="s2">The wall drawing up close</h2>
+    <div class="stage">
+      <div class="pair">
+        <div><div class="label">The room, seen from the side</div><canvas id="room2" width="300" height="240" aria-label="A balloon floating in a room, seen from the side"></canvas></div>
+        <div><div class="label">The wall</div><canvas id="wall2" width="400" height="240" aria-label="A glowing line on the wall tracing the balloon's path"></canvas></div>
+      </div>
+      <div class="row">
+        <button id="tapBtn" type="button">Tap the balloon</button>
+        <label class="check" for="auto2"><input type="checkbox" id="auto2" checked> Children tap it automatically</label>
+      </div>
+      <p class="note">The line copies where the balloon goes, like a pen tied to it, and older parts fade after a few seconds. Taps don't mark the line: you hear them instead.</p>
+    </div>
+  </section>
+</div>
+
+<script>
+(function(){
+const $=id=>document.getElementById(id),NS='http://www.w3.org/2000/svg';
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+let playing=!reduce,soundOn=false,actx=null;
+const NOTES=[261.63,293.66,329.63,392,440,523.25,587.33,659.25];
+function tone(f,g0,dur){if(!soundOn)return;try{if(!actx)actx=new (window.AudioContext||window.webkitAudioContext)();const t=actx.currentTime,o=actx.createOscillator(),g=actx.createGain();o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(g0||0.08,t+0.04);g.gain.exponentialRampToValueAtTime(0.0001,t+(dur||0.9));o.connect(g);g.connect(actx.destination);o.start(t);o.stop(t+(dur||0.9)+0.1);}catch(e){}}
+const cap=$('caption');function say(s){cap.textContent=s;}
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v)),rnd=(a,b)=>a+Math.random()*(b-a),dist=(a,b,c,d)=>Math.hypot(a-c,b-d);
+function P(x,z,h){const v=z/4,W=480+200*v,ppm=W/4;return{X:100-100*v+x/4*W,Y:240+200*v-h*ppm,ppm};}
+const WX=x=>130+x/4*420, WY=h=>212-clamp(h,0,2.6)/2.6*170;
+
+/* webcam stand in the back-left corner */
+(function(){const r=$('rig'),b=P(0.2,0.3,0),t=P(0.2,0.3,2.5),arm=P(0.6,0.5,2.5);
+ r.innerHTML=`<line x1="${b.X}" y1="${b.Y}" x2="${t.X}" y2="${t.Y}" stroke="#6B747A" stroke-width="3"/><line x1="${b.X}" y1="${b.Y}" x2="${b.X-12}" y2="${b.Y+6}" stroke="#6B747A" stroke-width="2"/><line x1="${b.X}" y1="${b.Y}" x2="${b.X+12}" y2="${b.Y+6}" stroke="#6B747A" stroke-width="2"/><rect x="${b.X-8}" y="${b.Y-6}" width="16" height="6" rx="2" fill="#9AA3A8"/><line x1="${t.X}" y1="${t.Y}" x2="${arm.X}" y2="${arm.Y}" stroke="#6B747A" stroke-width="3"/><rect x="${arm.X-9}" y="${arm.Y-5}" width="18" height="10" rx="3" fill="#2A2F33" transform="rotate(30 ${arm.X} ${arm.Y})"/>`;})();
+
+const kids=[{x:1.2,z:2.5,tx:1.2,tz:2.5,el:$('kidA'),arms:$('armsA'),swing:0,wait:2,recv:false,dir:-1},{x:2.9,z:2.8,tx:2.9,tz:2.8,el:$('kidB'),arms:$('armsB'),swing:0,wait:3,recv:false,dir:1}];
+const bots=[{name:'Cozmo',x:0.5,z:0.6,hx:0.5,hz:0.6,lo:0.2,hi:2.05,hd:0,el:$('cozmo'),k:0.14/40,st:'',bounce:0,moving:0},{name:'MiP',x:3.5,z:0.6,hx:3.5,hz:0.6,lo:1.95,hi:3.8,hd:Math.PI,el:$('mip'),k:0.36/60,st:'',bounce:0,moving:0}];
+const BEAN={x:-9,z:-9,r:0};
+let B,trail,dots;
+const fm=$('floorMarks');bots.forEach(b=>{const p=P(b.hx,b.hz,0),q=0.3*p.ppm;const r=document.createElementNS(NS,'rect');r.setAttribute('x',p.X-q);r.setAttribute('y',p.Y-q*0.28);r.setAttribute('width',2*q);r.setAttribute('height',q*0.56);r.setAttribute('fill','none');r.setAttribute('stroke','#F4F1E6');r.setAttribute('stroke-width','2');r.setAttribute('stroke-dasharray','5 4');fm.appendChild(r);});
+const bShadow=document.createElementNS(NS,'ellipse');bShadow.setAttribute('fill','#000');$('shadows').appendChild(bShadow);
+const pool=[];for(let i=0;i<160;i++){const l=document.createElementNS(NS,'line');l.setAttribute('stroke','#F2C29B');l.setAttribute('stroke-linecap','round');$('trail').appendChild(l);pool.push(l);}
+function reset(){B={mode:'intro',t:0,from:0,to:1,p:0,T:2.2,H:0.8,sx:0,sz:0,sh:1.45,ex:0,ez:0,eh:1.45,x:1.2,z:2.35,h:1.45,streak:0,hits:0,missAt:6,claim:0,party:0,caller:null,nudged:false,beeps:0};trail=[];dots=[];$('wallDots').innerHTML='';say('Someone says "Let\'s play keepy uppy". Three soft beeps, then play starts.');}
+reset();
+function launch(fromIdx){const f=kids[fromIdx],ti=1-fromIdx,t=kids[ti];B.mode='fly';B.from=fromIdx;B.to=ti;B.p=0;B.T=rnd(2,2.6);B.H=rnd(0.6,0.95);B.sx=f.x;B.sz=f.z-0.15;B.sh=1.45;let ex=clamp(t.x+rnd(-0.6,0.6),0.6,3.4),ez=clamp(t.z+rnd(-0.5,0.4),1.4,3.4);if(Math.abs(ex-f.x)<1.1)ex=clamp(f.x+(f.x<2?1.5:-1.5),0.6,3.4);B.ex=ex;B.ez=ez-0.15;B.eh=1.45;t.tx=ex;t.tz=ez;t.recv=true;f.recv=false;f.wait=rnd(0.5,1.5);}
+function hit(){const k=kids[B.to];B.hits++;B.streak++;k.swing=0.35;tone(NOTES[(B.streak-1)%8]);const c=bots[B.x<2?0:1];c.bounce=0.6;say(`Tap! A soft note plays (note ${(B.streak-1)%8+1} of the tune), and ${c.name} reacts.`);if(B.streak%10===0){B.party=1.8;say('10 in a row! Both robots do a small, quiet celebration.');}launch(B.to);}
+function nearestKid(x,z){return dist(x,z,kids[0].x,kids[0].z)<dist(x,z,kids[1].x,kids[1].z)?0:1;}
+function stepKids(dt){kids.forEach((k,i)=>{if(!k.recv&&B.mode==='fly'){k.wait-=dt;if(k.wait<=0){k.wait=rnd(2.5,4.5);for(let n=0;n<8;n++){const tx=rnd(0.7,3.3),tz=rnd(1.6,3.4),o=kids[1-i];if(dist(tx,tz,o.tx,o.tz)>1.2){k.tx=tx;k.tz=tz;break;}}}}
+ const d=dist(k.x,k.z,k.tx,k.tz),sp=k.recv?0.7:0.35;if(d>0.02){const s=Math.min(d,sp*dt);k.x+=(k.tx-k.x)/d*s;k.z+=(k.tz-k.z)/d*s;}k.swing=Math.max(0,k.swing-dt);});}
+function callKid(){if(B.caller!=null)return;const ki=nearestKid(B.x,B.z);B.caller=ki;kids[ki].recv=true;kids[ki].tx=B.x;kids[ki].tz=B.z+0.2;}
+function addDot(){const c=document.createElementNS(NS,'circle');const n=dots.length;c.setAttribute('cx',300+n*40);c.setAttribute('cy',127);c.setAttribute('r',7);c.setAttribute('fill','#F2C29B');$('wallDots').appendChild(c);dots.push(c);}
+function stepBall(dt){
+ if(B.mode==='intro'){B.t+=dt;const want=Math.min(3,Math.floor((B.t-0.6)/1)+1);while(B.beeps<want&&B.t>0.6){B.beeps++;addDot();tone(523.25,0.06,0.25);}
+  if(B.t>4){dots.forEach(d=>d.remove());dots=[];launch(0);say('Play starts. The line on the wall follows the balloon.');}}
+ else if(B.mode==='fly'){B.p+=dt/B.T;const p=Math.min(1,B.p);B.x=B.sx+(B.ex-B.sx)*p;B.z=B.sz+(B.ez-B.sz)*p;B.h=B.sh+(B.eh-B.sh)*p+4*B.H*p*(1-p);
+  if(B.claim===0&&B.x>2.2)B.claim=1;else if(B.claim===1&&B.x<1.8)B.claim=0;
+  if(p>=1){if(B.hits+1>=B.missAt){B.mode='fall';B.t=0;B.fx=B.x;B.fz=B.z;B.fh=B.h;B.gx=clamp(B.x+rnd(-0.9,0.9),0.5,3.5);B.gz=clamp(B.z+rnd(-1.2,-0.5),0.8,3.3);B.claim=B.gx<2?0:1;kids[B.to].recv=false;say('Missed. The balloon floats down to the floor...');}else hit();}}
+ else if(B.mode==='fall'){B.t+=dt;const p=Math.min(1,B.t/1.3);B.x=B.fx+(B.gx-B.fx)*p;B.z=B.fz+(B.gz-B.fz)*p;B.h=B.fh+(0.22-B.fh)*p*p;if(p>=1){B.mode='landed';B.t=0;B.streak=0;tone(174.61,0.07,1.2);say(`It landed. A soft, low landing sound plays and the tune pauses. The line on the wall rests. ${bots[B.claim].name} rolls over.`);}}
+ else if(B.mode==='landed'){B.t+=dt;const c=bots[B.claim];if(dist(c.x,c.z,B.x,B.z)<0.38&&!B.nudged){B.mode='nudge';B.t=0;B.nudged=true;const ki=nearestKid(B.x,B.z),k=kids[ki],d=dist(B.x,B.z,k.x,k.z)||1;B.nx=(k.x-B.x)/d;B.nz=(k.z-B.z)/d;say(`${c.name} gives the balloon a gentle nudge toward the nearest child.`);}
+  if(B.t>3.5)callKid();}
+ else if(B.mode==='nudge'){B.t+=dt;if(B.t<1){B.x+=B.nx*0.35*dt;B.z+=B.nz*0.35*dt;}else{B.mode='landed';B.t=3.6;callKid();}}
+ if((B.mode==='landed'||B.mode==='nudge')&&B.caller!=null){const k=kids[B.caller];if(dist(k.x,k.z,B.x,B.z)<0.45){B.mode='pickup';B.t=0;B.fx=B.x;B.fz=B.z;say('A child picks it up. The tune carries on from the same note.');}}
+ if(B.mode==='pickup'){B.t+=dt;const k=kids[B.caller],p=Math.min(1,B.t/0.8);B.x=B.fx+(k.x-B.fx)*p;B.z=B.fz+(k.z-0.15-B.fz)*p;B.h=0.22+(1.45-0.22)*p;if(p>=1){const ci=B.caller;B.caller=null;B.nudged=false;B.missAt=B.hits+6+Math.floor(Math.random()*6);kids[ci].recv=false;launch(ci);say('Back in the air.');}}
+ B.party=Math.max(0,B.party-dt);
+ const now=performance.now();if(B.mode==='fly'||B.mode==='fall'||B.mode==='pickup')trail.push({t:now,x:WX(B.x),y:WY(B.h)});
+ const life=B.mode==='landed'||B.mode==='nudge'?1e9:5000;trail=trail.filter(p=>now-p.t<5000||life>1e8);if(trail.length>pool.length+1)trail=trail.slice(-pool.length-1);}
+function stepBots(dt){
+ bots.forEach((b,i)=>{let tx,tz,role;const mine=i===B.claim,down=B.mode==='landed'||B.mode==='nudge'||B.mode==='fall';
+  if(B.mode==='intro'){tx=b.hx;tz=b.hz;role='Waiting on its calm spot';}
+  else if(mine){const d=dist(b.x,b.z,B.x,B.z)||1,off=down?0.3:0.45;tx=B.x+(b.x-B.x)/d*off;tz=B.z+(b.z-B.z)/d*off;role=B.mode==='nudge'?'Nudging the balloon to a child':(down?'Rolling to the balloon':'Following the balloon');}
+  else if(down){tx=b.hx;tz=b.hz;role='Watching from its calm spot';}
+  else{tx=i===0?1.0:3.0;tz=clamp(B.z-1.0,0.5,1.8);role='Keeping level with the balloon';}
+  tx=clamp(tx,b.lo,b.hi);
+  let dx=tx-b.x,dz=tz-b.z,dd=Math.hypot(dx,dz);let vx=dd>0.04?dx/dd:0,vz=dd>0.04?dz/dd:0;let slow=1,stop=false;
+  kids.forEach(k=>{const d=dist(b.x,b.z,k.x,k.z);if(d<0.4)stop=true;else if(d<1){const w=(1-d)*1.6;vx+=(b.x-k.x)/d*w;vz+=(b.z-k.z)/d*w;slow=Math.min(slow,clamp((d-0.4)/0.6,0.25,1));}});
+  const o=bots[1-i],od=dist(b.x,b.z,o.x,o.z);if(od<0.6&&od>0){vx+=(b.x-o.x)/od*(0.6-od)*3;vz+=(b.z-o.z)/od*(0.6-od)*3;}
+  const vl=Math.hypot(vx,vz);let sp=0;const top=mine?0.34:0.2;if(vl>0.01&&dd>0.04){sp=top*slow*Math.min(1,dd/0.3);vx/=vl;vz/=vl;}
+  if(stop){sp=0;b.st='Stopped: a child is within 40 cm';}else if(slow<0.99&&sp>0)b.st=role+', slowly near a child';else b.st=role;
+  b.x=clamp(b.x+vx*sp*dt,Math.max(0.15,b.lo-0.1),Math.min(3.85,b.hi+0.1));b.z=clamp(b.z+vz*sp*dt,0.15,3.85);if(sp>0.02)b.hd=Math.atan2(vz,vx);b.moving=sp;b.bounce=Math.max(0,b.bounce-dt);});}
+function draw(now){
+ const items=[];
+ kids.forEach(k=>{const p=P(k.x,k.z,0),s=p.ppm*1.25/150;k.el.setAttribute('transform',`translate(${p.X},${p.Y}) scale(${s})`);k.arms.setAttribute('transform',`rotate(${k.swing>0?(k.dir*14)*Math.sin(Math.PI*k.swing/0.35):0},0,-100)`);items.push([k.z,k.el]);});
+ bots.forEach((b,i)=>{const p=P(b.x,b.z,0),s=p.ppm*b.k;const party=B.party>0?Math.sin(now/90)*4:0;let rot=0,dy=0;if(i===1){rot=Math.sin(now/180)*(1.5+b.moving*12)+party+(b.bounce>0?6*Math.sin(Math.PI*b.bounce/0.6)*Math.sin(now/60):0);}else{dy=B.party>0?-Math.abs(Math.sin(now/120))*6:0;}b.el.setAttribute('transform',`translate(${p.X},${p.Y+dy*s}) scale(${s}) rotate(${rot})`);items.push([b.z,b.el]);});
+ const lift=bots[0].bounce>0?-28*Math.sin(Math.PI*bots[0].bounce/0.6):(B.party>0?-20*Math.abs(Math.sin(now/120)):0);$('clift').setAttribute('transform',`translate(0,${lift*0.4})`);
+ const p=P(B.x,B.z,B.h),pg=P(B.x,B.z,0);$('balloon').setAttribute('transform',`translate(${p.X},${p.Y}) scale(${0.22*p.ppm/40})`);items.push([B.z+0.01,$('balloon')]);
+ const hf=clamp(B.h/2.4,0,1);bShadow.setAttribute('cx',pg.X);bShadow.setAttribute('cy',pg.Y);bShadow.setAttribute('rx',0.2*pg.ppm*(1-0.3*hf));bShadow.setAttribute('ry',0.05*pg.ppm);bShadow.setAttribute('fill-opacity',(0.05+0.1*(1-hf)).toFixed(3));
+ items.sort((a,b)=>a[0]-b[0]);const dyn=$('dyn');items.forEach(it=>dyn.appendChild(it[1]));
+ const resting=B.mode==='landed'||B.mode==='nudge';
+ for(let i=0;i<pool.length;i++){const a=trail[i],c=trail[i+1],l=pool[i];if(!a||!c){l.setAttribute('stroke-opacity',0);continue;}const age=resting?0.5:(now-c.t)/5000;const k=clamp(1-age,0,1);l.setAttribute('x1',a.x);l.setAttribute('y1',a.y);l.setAttribute('x2',c.x);l.setAttribute('y2',c.y);l.setAttribute('stroke-width',(1.5+3*k).toFixed(2));l.setAttribute('stroke-opacity',(0.1+0.9*k).toFixed(3));}
+ const band=B.h<1.2?'low':(B.h<1.9?'middle':'high');
+ $('stBall').textContent=B.mode==='intro'?'waiting to start':(B.mode==='fly'||B.mode==='pickup'?`${B.h.toFixed(1)} m high (${band}), ${B.x<2?"Cozmo's":"MiP's"} half`:'on the floor');
+ $('stCozmo').textContent=bots[0].st;$('stMip').textContent=bots[1].st;}
+let last=performance.now();
+function loop(now){const dt=Math.min(0.05,(now-last)/1000);last=now;if(playing){stepKids(dt);stepBall(dt);stepBots(dt);}draw(now);requestAnimationFrame(loop);}
+requestAnimationFrame(loop);
+const pbn=$('playBtn'),sbn=$('soundBtn');
+function sync(){pbn.textContent=playing?'Pause':'Play';sbn.textContent=soundOn?'Sound on':'Sound off';sbn.setAttribute('aria-pressed',soundOn);}
+pbn.addEventListener('click',()=>{playing=!playing;sync();});
+sbn.addEventListener('click',()=>{soundOn=!soundOn;if(soundOn){try{if(!actx)actx=new (window.AudioContext||window.webkitAudioContext)();actx.resume();}catch(e){}}sync();});
+$('restartBtn').addEventListener('click',()=>{reset();bots.forEach(b=>{b.x=b.hx;b.z=b.hz;});kids[0].x=1.2;kids[0].z=2.5;kids[1].x=2.9;kids[1].z=2.8;playing=true;sync();});
+if(reduce)say('Press Play to watch the game.');
+sync();
+
+/* Section 2: side view and wall */
+const room=$('room2'),wall=$('wall2'),rc=room.getContext('2d'),wc=wall.getContext('2d');
+const RW=300,RH=240,FLOOR=212,W2=400,H2=240;
+let b={x:100,y:120,vx:16,vy:-10},landed=0,pts=[];
+function tap2(){landed=0;b.vy=-(95+Math.random()*25);b.vx=(b.x<RW/2?1:-1)*(15+Math.random()*25);tone(NOTES[Math.floor(Math.random()*8)]);}
+$('tapBtn').onclick=tap2;room.addEventListener('pointerdown',tap2);
+const auto=$('auto2');let last2=performance.now(),wasLanded=false;
+function kid(x){rc.fillStyle='#5B6B78';rc.beginPath();rc.arc(x,150,9,0,7);rc.fill();rc.fillRect(x-8,160,16,34);rc.fillRect(x-7,194,5,18);rc.fillRect(x+2,194,5,18);}
+function step2(now){const dt=Math.min(0.05,(now-last2)/1000);last2=now;
+ if(playing){b.vy+=38*dt;b.vy*=Math.pow(0.6,dt);b.vx*=Math.pow(0.8,dt);b.x+=b.vx*dt;b.y+=b.vy*dt;
+ if(b.x<30){b.x=30;b.vx=Math.abs(b.vx);}if(b.x>RW-30){b.x=RW-30;b.vx=-Math.abs(b.vx);}
+ if(b.y>FLOOR-22){b.y=FLOOR-22;b.vy=0;b.vx*=0.9;landed+=dt;if(!wasLanded&&landed>0.3){wasLanded=true;tone(174.61,0.07,1.2);}}else{wasLanded=false;}
+ if(auto.checked&&b.vy>0&&b.y>140&&b.y<FLOOR-24&&Math.random()<0.08)tap2();
+ if(auto.checked&&landed>2.5)tap2();
+ if(landed<0.3)pts.push({t:now,x:b.x,y:b.y});}
+ while(pts.length&&now-pts[0].t>5000&&landed<0.3)pts.shift();
+ rc.fillStyle='#E6ECEA';rc.fillRect(0,0,RW,RH);rc.fillStyle='#D6BF9B';rc.fillRect(0,FLOOR,RW,RH-FLOOR);kid(55);kid(245);
+ rc.fillStyle='#7FD36A';rc.beginPath();rc.arc(b.x,b.y,22,0,7);rc.fill();rc.fillStyle='rgba(255,255,255,.5)';rc.beginPath();rc.ellipse(b.x-7,b.y-8,5,8,0,0,7);rc.fill();
+ wc.fillStyle='#1E3341';wc.fillRect(0,0,W2,H2);
+ for(let i=1;i<pts.length;i++){const a=pts[i-1],c=pts[i],k=landed>0.3?0.5:Math.max(0,1-(now-c.t)/5000);
+  wc.strokeStyle=`rgba(242,194,155,${(0.1+0.9*k).toFixed(3)})`;wc.lineWidth=2+3*k;wc.lineCap='round';wc.beginPath();wc.moveTo(a.x/RW*W2,a.y/RH*H2);wc.lineTo(c.x/RW*W2,c.y/RH*H2);wc.stroke();}
+ if(pts.length){const h=pts[pts.length-1];wc.fillStyle='#FFE3CF';wc.beginPath();wc.arc(h.x/RW*W2,h.y/RH*H2,6,0,7);wc.fill();}
+ requestAnimationFrame(step2);}
+requestAnimationFrame(step2);
+})();
+</script>
